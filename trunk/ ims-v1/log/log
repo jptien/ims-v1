@@ -1,0 +1,49 @@
+22:04:46.343 Fri 09 Apr 2010, 220.70.2.141:5060/udp (427 bytes): sent
+REGISTER sip:220.70.2.141 SIP/2.0
+Via: SIP/2.0/UDP 220.149.84.130:5060;rport;branch=z9hG4bK87821
+Max-Forwards: 70
+To: <sip:2003@220.70.2.141>
+From: <sip:2003@220.70.2.141>;tag=z9hG4bK02167545
+Call-ID: 268960584318@220.149.84.130
+CSeq: 1 REGISTER
+Contact: <sip:2003@220.149.84.130>
+Expires: 3600
+User-Agent: mjsip stack 1.6
+P-Access-Network-Info: 3GPP-UTRAN-TDD; utran-cell-id-3gpp=234151D0FCE11
+Content-Length: 0
+
+-----End-of-message-----
+
+22:04:46.343 Fri 09 Apr 2010, 220.70.2.141:5060/udp (377 bytes): received
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP 220.149.84.130:5060;rport=5060;branch=z9hG4bK87821
+To: <sip:2003@220.70.2.141>;tag=2ccd5fd7e1a9f58eae7981d1411dc621.c50f
+From: <sip:2003@220.70.2.141>;tag=z9hG4bK02167545
+Call-ID: 268960584318@220.149.84.130
+CSeq: 1 REGISTER
+Contact: <sip:2003@220.149.84.130>;expires=3600
+Server: OpenSER (1.3.1-notls (i386/linux))
+Content-Length: 0
+
+-----End-of-message-----
+
+Provider-5060: 2 listeners: INVITE, 268960584318@220.149.84.130-1-REGISTER-220.149.84.130:5060-z9hG4bK87821, 
+SipProvider-5060: using transport udp
+SipProvider-5060: Resolving host address '220.70.2.141'
+SipProvider-5060: Sending message to udp:220.70.2.141:5060
+
+22:04:46.343 Fri 09 Apr 2010, 220.70.2.141:5060/udp (427 bytes): REGISTER sip:220.70.2.141 SIP/2.0, sent
+
+
+22:04:46.359 Fri 09 Apr 2010, 220.70.2.141:5060/udp (377 bytes): SIP/2.0 200 OK, received
+
+SipProvider-5060: received new SIP message
+SipProvider-5060: DEBUG: transaction-id: 268960584318@220.149.84.130-1-REGISTER-220.149.84.130:5060-z9hG4bK87821
+SipProvider-5060: message passed to transaction: 268960584318@220.149.84.130-1-REGISTER-220.149.84.130:5060-z9hG4bK87821
+TransactionClient#1: changed transaction state: T_Completed
+RegisterAgent: Registration success: 200 OK
+UA: Registration success: 200 OK
+TransactionClient#1: Clearing timeout expired
+SipProvider-5060: removing SipProviderListener: 268960584318@220.149.84.130-1-REGISTER-220.149.84.130:5060-z9hG4bK87821
+SipProvider-5060: 1 listeners: INVITE, 
+TransactionClient#1: changed transaction state: T_Terminated
