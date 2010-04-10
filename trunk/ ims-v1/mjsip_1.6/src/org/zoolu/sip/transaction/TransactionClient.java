@@ -24,12 +24,12 @@
 package org.zoolu.sip.transaction;
 
 
-import org.zoolu.sip.address.SipURL;
-import org.zoolu.sip.provider.*;
-import org.zoolu.sip.message.*;
-import org.zoolu.tools.Timer;
-import org.zoolu.tools.TimerListener;
+import org.zoolu.sip.message.Message;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
+import org.zoolu.sip.provider.TransactionIdentifier;
 import org.zoolu.tools.LogLevel;
+import org.zoolu.tools.Timer;
 
 
 /** Generic client transaction as defined in RFC 3261 (Section 17.1.2).
@@ -87,7 +87,8 @@ public class TransactionClient extends Transaction
       
    /** Method derived from interface SipListener.
      * It's fired from the SipProvider when a new message is received for to the present TransactionClient. */
-   public void onReceivedMessage(SipProvider provider, Message msg)
+   @Override
+public void onReceivedMessage(SipProvider provider, Message msg)
    {  if (msg.isResponse())
       {  int code=msg.getStatusLine().getCode();
          if (code>=100 && code<200 && (statusIs(STATE_TRYING) || statusIs(STATE_PROCEEDING)))
@@ -118,7 +119,8 @@ public class TransactionClient extends Transaction
 
    /** Method derived from interface TimerListener.
      * It's fired from an active Timer. */
-   public void onTimeout(Timer to)
+   @Override
+public void onTimeout(Timer to)
    {  try
       {  if (to.equals(retransmission_to) && (statusIs(STATE_TRYING) || statusIs(STATE_PROCEEDING)))
          {  printLog("Retransmission timeout expired",LogLevel.HIGH);
@@ -155,7 +157,8 @@ public class TransactionClient extends Transaction
    }
    
    /** Terminates the transaction. */
-   public void terminate()
+   @Override
+public void terminate()
    {  if (!statusIs(STATE_TERMINATED))
       {  retransmission_to.halt();
          transaction_to.halt();     
@@ -170,7 +173,8 @@ public class TransactionClient extends Transaction
    //**************************** Logs ****************************/
 
    /** Adds a new string to the default Log */
-   protected void printLog(String str, int level)
+   @Override
+protected void printLog(String str, int level)
    {  if (log!=null) log.println("TransactionClient#"+transaction_sqn+": "+str,level+SipStack.LOG_LEVEL_TRANSACTION);  
    }
 

@@ -35,7 +35,7 @@ public class ContentTypeHeader extends ParametricHeader
    //}
 
    public ContentTypeHeader(String hvalue)
-   {  super(SipHeaders.Content_Type,hvalue);
+   {  super(BaseSipHeaders.Content_Type,hvalue);
    }
 
    public ContentTypeHeader(Header hd)

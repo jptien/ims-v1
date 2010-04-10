@@ -40,7 +40,7 @@ public class CSeqHeader extends Header
    //}
 
    public CSeqHeader(String hvalue)
-   {  super(SipHeaders.CSeq,hvalue);
+   {  super(BaseSipHeaders.CSeq,hvalue);
    }
 
    public CSeqHeader(Header hd)
@@ -48,7 +48,7 @@ public class CSeqHeader extends Header
    }
    
    public CSeqHeader(long seq, String method)
-   {  super(SipHeaders.CSeq,String.valueOf(seq)+" "+method);
+   {  super(BaseSipHeaders.CSeq,String.valueOf(seq)+" "+method);
    }
 
    /** Gets method of CSeqHeader */

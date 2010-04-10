@@ -22,13 +22,9 @@
 package local.net;
 
 
-import org.zoolu.net.*;
-import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.net.SocketAddress;
 import org.zoolu.sip.message.Message;
-
-import org.zoolu.tools.Timer;
-import org.zoolu.tools.TimerListener;
-import java.util.Date;
+import org.zoolu.sip.provider.SipProvider;
 
 
 /** KeepAliveSip thread, for keeping the connection up toward a target SIP node
@@ -75,7 +71,8 @@ public class KeepAliveSip extends KeepAliveUdp
 
 
    /** Sends the kepp-alive packet now. */
-   public void sendToken() throws java.io.IOException
+   @Override
+public void sendToken() throws java.io.IOException
    {  // do send?
       if (!stop && target!=null && sip_provider!=null)
       {  sip_provider.sendMessage(message,sip_provider.getDefaultTransport(),target.getAddress().toString(),target.getPort(),127);
@@ -84,14 +81,16 @@ public class KeepAliveSip extends KeepAliveUdp
 
 
    /** Main thread. */
-   public void run()
+   @Override
+public void run()
    {  super.run();
       sip_provider=null;
    }
    
        
    /** Gets a String representation of the Object */
-   public String toString()
+   @Override
+public String toString()
    {  String str=null;
       if (sip_provider!=null)
       {  str="sip:"+sip_provider.getViaAddress()+":"+sip_provider.getPort()+"-->"+target.toString();

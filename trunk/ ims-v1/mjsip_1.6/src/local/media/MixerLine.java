@@ -22,9 +22,10 @@
 package local.media;
 
 
-import java.io.*;
-import java.util.Hashtable;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.Hashtable;
 
 
 /** MixerLine is a simple G711 mixer with N input lines (InputStream)
@@ -69,7 +70,8 @@ public class MixerLine extends InputStream
 
 
    /** Returns the number of bytes that can be read (or skipped over) from this input stream without blocking by the next caller of a method for this input stream. */
-   public int available() throws IOException
+   @Override
+public int available() throws IOException
    {  int max=0;
       for (Enumeration e=input_lines.elements(); e.hasMoreElements(); )
       {  int n=((InputStream)e.nextElement()).available();
@@ -79,7 +81,8 @@ public class MixerLine extends InputStream
    }
    
    /** Closes this input stream and releases any system resources associated with the stream. */
-   public void close() throws IOException
+   @Override
+public void close() throws IOException
    {  for (Enumeration e=input_lines.elements(); e.hasMoreElements(); )
       {  ((InputStream)e.nextElement()).close();
       }
@@ -87,14 +90,16 @@ public class MixerLine extends InputStream
    }
    
    /** Marks the current position in this input stream. */
-   public void mark(int readlimit)
+   @Override
+public void mark(int readlimit)
    {  for (Enumeration e=input_lines.elements(); e.hasMoreElements(); )
       {  ((InputStream)e.nextElement()).mark(readlimit);
       }
    }
    
    /** Tests if this input stream supports the mark and reset methods. */
-   public boolean markSupported()
+   @Override
+public boolean markSupported()
    {  boolean supported=true;
       for (Enumeration e=input_lines.elements(); e.hasMoreElements(); )
       {  if (!((InputStream)e.nextElement()).markSupported()) supported=false;
@@ -103,7 +108,8 @@ public class MixerLine extends InputStream
    }
    
    /** Reads the next byte of data from the input stream. */
-   public int read() throws IOException
+   @Override
+public int read() throws IOException
    {  int sum=0;
       int count=0;
       int err_code=0;
@@ -123,7 +129,8 @@ public class MixerLine extends InputStream
    }
    
    /** Reads some number of bytes from the input stream and stores them into the buffer array b. */
-   public int read(byte[] b) throws IOException
+   @Override
+public int read(byte[] b) throws IOException
    {  //System.err.print("o");
       int ret=super.read(b);
       //System.err.print(".");
@@ -131,7 +138,8 @@ public class MixerLine extends InputStream
    }
    
    /** Reads up to len bytes of data from the input stream into an array of bytes. */
-   public int read(byte[] b, int off, int len) throws IOException
+   @Override
+public int read(byte[] b, int off, int len) throws IOException
    {  //System.err.print("o");
       int ret=super.read(b,off,len);
       //System.err.print(".");
@@ -139,14 +147,16 @@ public class MixerLine extends InputStream
    }
    
    /** Repositions this stream to the position at the time the mark method was last called on this input stream. */
-   public void reset() throws IOException
+   @Override
+public void reset() throws IOException
    {  for (Enumeration e=input_lines.elements(); e.hasMoreElements(); )
       {  ((InputStream)e.nextElement()).reset();
       }
    }
    
    /** Skips over and discards n bytes of data from this input stream. */
-   public long skip(long n) throws IOException
+   @Override
+public long skip(long n) throws IOException
    {  for (Enumeration e=input_lines.elements(); e.hasMoreElements(); )
       {  ((InputStream)e.nextElement()).skip(n);
       }

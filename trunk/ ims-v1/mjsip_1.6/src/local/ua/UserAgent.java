@@ -21,29 +21,29 @@
 
 package local.ua;
 
+import java.util.Enumeration;
+import java.util.Vector;
+
 import local.media.AudioClipPlayer;
-import org.zoolu.sip.call.*;
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.provider.SipStack;
-import org.zoolu.sip.provider.SipProvider;
-import org.zoolu.sip.header.ExpiresHeader;
-import org.zoolu.sip.header.ContactHeader;
-import org.zoolu.sip.header.CallIdHeader;
+
+import org.zoolu.sdp.AttributeField;
+import org.zoolu.sdp.ConnectionField;
+import org.zoolu.sdp.MediaDescriptor;
+import org.zoolu.sdp.MediaField;
+import org.zoolu.sdp.SessionDescriptor;
+import org.zoolu.sdp.TimeField;
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.call.Call;
+import org.zoolu.sip.call.CallListenerAdapter;
+import org.zoolu.sip.call.ExtendedCall;
+import org.zoolu.sip.call.SdpTools;
 import org.zoolu.sip.header.StatusLine;
-import org.zoolu.sip.transaction.TransactionClient;
-import org.zoolu.sip.transaction.TransactionClientListener;
-import org.zoolu.sip.call.*;
-import org.zoolu.sip.message.*;
-import org.zoolu.sdp.*;
+import org.zoolu.sip.message.Message;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
 import org.zoolu.tools.Log;
 import org.zoolu.tools.LogLevel;
 import org.zoolu.tools.Parser;
-import org.zoolu.tools.Archive;
-
-//import java.util.Iterator;
-import java.util.Enumeration;
-import java.util.Vector;
-import java.io.*;
 
 /**
  * Simple SIP user agent (UA). It includes audio/video applications.

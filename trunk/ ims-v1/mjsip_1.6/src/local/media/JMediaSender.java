@@ -1,14 +1,24 @@
 package local.media;
 
 
-import java.io.*;
-
-import javax.media.*;
-import javax.media.format.*;
-import javax.media.protocol.*;
-import javax.media.control.TrackControl;
-
+import java.io.IOException;
 import java.util.Vector;
+
+import javax.media.CaptureDeviceInfo;
+import javax.media.CaptureDeviceManager;
+import javax.media.Controller;
+import javax.media.DataSink;
+import javax.media.Format;
+import javax.media.Manager;
+import javax.media.MediaLocator;
+import javax.media.NoDataSinkException;
+import javax.media.NoProcessorException;
+import javax.media.Processor;
+import javax.media.control.TrackControl;
+import javax.media.format.AudioFormat;
+import javax.media.format.VideoFormat;
+import javax.media.protocol.ContentDescriptor;
+import javax.media.protocol.DataSource;
 
 
 /** JMediaSender is a JMF-based media sender.
@@ -49,7 +59,7 @@ public class JMediaSender
                
       // #### 3) configure the processor
       processor.configure();
-      while(processor.getState()<processor.Configured)
+      while(processor.getState()<Processor.Configured)
       {  // wait..
          //synchronized (getStateLock())
          //{  try { getStateLock().wait(); } catch (InterruptedException ie) { return; }
@@ -103,7 +113,7 @@ public class JMediaSender
       
       // #### 4) realize the processor
       processor.realize();
-      while(processor.getState()<processor.Realized) ; // wait..
+      while(processor.getState()<Controller.Realized) ; // wait..
       System.out.println("Processor realized");
         
          

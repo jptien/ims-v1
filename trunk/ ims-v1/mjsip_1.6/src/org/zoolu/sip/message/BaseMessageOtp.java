@@ -24,12 +24,16 @@
 package org.zoolu.sip.message;
 
 
-import org.zoolu.sip.provider.*;
-import org.zoolu.sip.header.*;
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.message.SipMethods;
+import java.util.Vector;
+
 import org.zoolu.net.UdpPacket;
-import java.util.*;
+import org.zoolu.sip.header.ContentLengthHeader;
+import org.zoolu.sip.header.ContentTypeHeader;
+import org.zoolu.sip.header.Header;
+import org.zoolu.sip.header.MultipleHeader;
+import org.zoolu.sip.header.RequestLine;
+import org.zoolu.sip.header.StatusLine;
+import org.zoolu.sip.provider.SipParser;
 
 
 /** Class BaseMessageOtp implements a generic SIP Message.
@@ -95,7 +99,8 @@ public abstract class BaseMessageOtp extends BaseMessage
    }
    
    /** Sets the entire message */
-   public void setMessage(String str)
+   @Override
+public void setMessage(String str)
    {  parseIt(str);
    }   
 
@@ -125,7 +130,8 @@ public abstract class BaseMessageOtp extends BaseMessage
    }
 
    /** Gets string representation of Message */
-   public String toString()
+   @Override
+public String toString()
    {  StringBuffer str=new StringBuffer();
       if (request_line!=null) str.append(request_line.toString());
       else if (status_line!=null) str.append(status_line.toString());
@@ -136,7 +142,8 @@ public abstract class BaseMessageOtp extends BaseMessage
    }
    
    /** Gets message length */
-   public int getLength()
+   @Override
+public int getLength()
    {  return toString().length();
    }   
 
@@ -144,35 +151,41 @@ public abstract class BaseMessageOtp extends BaseMessage
    //**************************** Requests ****************************/
 
    /** Whether Message is a Request */
-   public boolean isRequest()
+   @Override
+public boolean isRequest()
    {  if (request_line!=null) return true;
       else return false;
    }
    
    /** Whether Message is a <i>method</i> request */
-   public boolean isRequest(String method)
+   @Override
+public boolean isRequest(String method)
    {  if (request_line!=null && request_line.getMethod().equalsIgnoreCase(method)) return true;
       else return false;
    }
 
 
    /** Whether Message has Request-line */
-   protected boolean hasRequestLine()
+   @Override
+protected boolean hasRequestLine()
    {  return request_line!=null;
    }
 
    /** Gets RequestLine in Message (Returns null if called for no request message) */
-   public RequestLine getRequestLine()
+   @Override
+public RequestLine getRequestLine()
    {  return request_line;
    }
 
    /** Sets RequestLine of the Message */
-   public void setRequestLine(RequestLine rl)
+   @Override
+public void setRequestLine(RequestLine rl)
    {  request_line=rl;
    }   
    
    /** Removes RequestLine of the Message */
-   public void removeRequestLine()
+   @Override
+public void removeRequestLine()
    {  request_line=null;
    } 
 
@@ -180,28 +193,33 @@ public abstract class BaseMessageOtp extends BaseMessage
    //**************************** Responses ****************************/
 
    /** Whether Message is a Response */
-   public boolean isResponse() throws NullPointerException
+   @Override
+public boolean isResponse() throws NullPointerException
    {  if (status_line!=null) return true;
       else return false;
    }
    
    /** Whether Message has Status-line */
-   protected boolean hasStatusLine()
+   @Override
+protected boolean hasStatusLine()
    {  return status_line!=null;
    }
 
    /** Gets StautsLine in Message (Returns null if called for no response message) */
-   public StatusLine getStatusLine()
+   @Override
+public StatusLine getStatusLine()
    {  return status_line;
    }
 
    /** Sets StatusLine of the Message */
-   public void setStatusLine(StatusLine sl)
+   @Override
+public void setStatusLine(StatusLine sl)
    {  status_line=sl;
    }      
    
    /** Removes StatusLine of the Message */
-   public void removeStatusLine()
+   @Override
+public void removeStatusLine()
    {  status_line=null;
    } 
 
@@ -209,7 +227,8 @@ public abstract class BaseMessageOtp extends BaseMessage
    //**************************** Generic Headers ****************************/
 
    /** Removes Request\Status Line of the Message */
-   protected void removeFirstLine()
+   @Override
+protected void removeFirstLine()
    {  removeRequestLine();
       removeStatusLine();
    }
@@ -224,14 +243,16 @@ public abstract class BaseMessageOtp extends BaseMessage
    }
 
    /** Gets the first Header of specified name (Returns null if no Header is found) */
-   public Header getHeader(String hname)
+   @Override
+public Header getHeader(String hname)
    {  int i=indexOfHeader(hname);
       if (i<0) return null;
       else return (Header)headers.elementAt(i);
    }
 
    /** Gets a Vector of all Headers of specified name (Returns empty Vector if no Header is found) */
-   public Vector getHeaders(String hname)
+   @Override
+public Vector getHeaders(String hname)
    {  Vector v=new Vector();
       for (int i=0; i<headers.size(); i++)
       {  Header h=(Header)headers.elementAt(i);
@@ -242,26 +263,30 @@ public abstract class BaseMessageOtp extends BaseMessage
 
    /** Adds Header at the top/bottom.
      * The bottom is considered before the Content-Length and Content-Type headers */
-   public void addHeader(Header header, boolean top) 
+   @Override
+public void addHeader(Header header, boolean top) 
    {  if (top) headers.insertElementAt(header,0); else headers.addElement(header);
    }
    
    /** Adds a Vector of Headers at the top/bottom */
-   public void addHeaders(Vector headers, boolean top) 
+   @Override
+public void addHeaders(Vector headers, boolean top) 
    {  for (int i=0; i<headers.size(); i++)
          if (top) this.headers.insertElementAt(headers.elementAt(i),i);
          else this.headers.addElement(headers.elementAt(i));
    }
 
    /** Adds MultipleHeader(s) <i>mheader</i> at the top/bottom */
-   public void addHeaders(MultipleHeader mheader, boolean top) 
+   @Override
+public void addHeaders(MultipleHeader mheader, boolean top) 
    {  if (mheader.isCommaSeparated()) addHeader(mheader.toHeader(),top); 
       else addHeaders(mheader.getHeaders(),top);
    }
 
    /** Adds Header before the first header <i>refer_hname</i>
      * . <p>If there is no header of such type, it is added at top */
-   public void addHeaderBefore(Header new_header, String refer_hname) 
+   @Override
+public void addHeaderBefore(Header new_header, String refer_hname) 
    {  int i=indexOfHeader(refer_hname);
       if (i<0) i=0;
       headers.insertElementAt(new_header,i);
@@ -269,7 +294,8 @@ public abstract class BaseMessageOtp extends BaseMessage
 
    /** Adds MultipleHeader(s) before the first header <i>refer_hname</i>
      * . <p>If there is no header of such type, they are added at top */
-   public void addHeadersBefore(MultipleHeader mheader, String refer_hname) 
+   @Override
+public void addHeadersBefore(MultipleHeader mheader, String refer_hname) 
    {  if (mheader.isCommaSeparated()) addHeaderBefore(mheader.toHeader(),refer_hname); 
       else
       {  int index=indexOfHeader(refer_hname);
@@ -281,7 +307,8 @@ public abstract class BaseMessageOtp extends BaseMessage
 
    /** Adds Header after the first header <i>refer_hname</i>
      * . <p>If there is no header of such type, it is added at bottom */
-   public void addHeaderAfter(Header new_header, String refer_hname) 
+   @Override
+public void addHeaderAfter(Header new_header, String refer_hname) 
    {  int i=indexOfHeader(refer_hname);
       if (i>=0) i++; else i=headers.size();
       headers.insertElementAt(new_header,i);
@@ -289,7 +316,8 @@ public abstract class BaseMessageOtp extends BaseMessage
 
    /** Adds MultipleHeader(s) after the first header <i>refer_hname</i>
      * . <p>If there is no header of such type, they are added at bottom */
-   public void addHeadersAfter(MultipleHeader mheader, String refer_hname) 
+   @Override
+public void addHeadersAfter(MultipleHeader mheader, String refer_hname) 
    {  if (mheader.isCommaSeparated()) addHeaderAfter(mheader.toHeader(),refer_hname); 
       else
       {  int index=indexOfHeader(refer_hname);
@@ -300,12 +328,14 @@ public abstract class BaseMessageOtp extends BaseMessage
    }
 
    /** Removes first Header of specified name */
-   public void removeHeader(String hname)
+   @Override
+public void removeHeader(String hname)
    {  removeHeader(hname,true);
    }
 
    /** Removes first (or last) Header of specified name. */
-   public void removeHeader(String hname, boolean first)
+   @Override
+public void removeHeader(String hname, boolean first)
    {  int index=-1;
       for (int i=0 ; i<headers.size(); i++)
       {  Header h=(Header)headers.elementAt(i);
@@ -318,7 +348,8 @@ public abstract class BaseMessageOtp extends BaseMessage
    }
    
    /** Removes all Headers of specified name */
-   public void removeAllHeaders(String hname) 
+   @Override
+public void removeAllHeaders(String hname) 
    {  for (int i=0 ; i<headers.size(); i++)
       {  Header h=(Header)headers.elementAt(i);
          if (hname.equalsIgnoreCase(h.getName()))
@@ -329,7 +360,8 @@ public abstract class BaseMessageOtp extends BaseMessage
    }
    
    /** Sets the Header <i>hd</i> removing any previous headers of the same type. */
-   public void setHeader(Header hd) 
+   @Override
+public void setHeader(Header hd) 
    {  boolean first=true;
       String hname=hd.getName();
       for (int i=0 ; i<headers.size(); i++)
@@ -351,7 +383,8 @@ public abstract class BaseMessageOtp extends BaseMessage
    }          
 
    /** Sets MultipleHeader <i>mheader</i> */
-   public void setHeaders(MultipleHeader mheader) 
+   @Override
+public void setHeaders(MultipleHeader mheader) 
    {  if (mheader.isCommaSeparated()) setHeader(mheader.toHeader()); 
       else
       {  boolean first=true;
@@ -380,15 +413,18 @@ public abstract class BaseMessageOtp extends BaseMessage
    //**************************** Specific Headers ****************************/
   
    /** Whether Message has Body */   
-   public boolean hasBody()
+   @Override
+public boolean hasBody()
    {  return this.body!=null;
    }
    /** Gets body(content) type */
-   public String getBodyType()
+   @Override
+public String getBodyType()
    {  return getContentTypeHeader().getContentType();
    } 
    /** Sets the message body */
-   public void setBody(String content_type, String body) 
+   @Override
+public void setBody(String content_type, String body) 
    {  removeBody();
       if (body!=null && body.length()>0)
       {  setContentTypeHeader(new ContentTypeHeader(content_type));
@@ -403,11 +439,13 @@ public abstract class BaseMessageOtp extends BaseMessage
    /** Gets message body. The end of body is evaluated
      * from the Content-Length header if present (SIP-RFC compliant),
      * or from the end of message if no Content-Length header is present (non-SIP-RFC compliant) */
-   public String getBody()
+   @Override
+public String getBody()
    {  return this.body;
    }  
    /** Removes the message body (if it exists) and the final empty line */
-   public void removeBody() 
+   @Override
+public void removeBody() 
    {  removeContentLengthHeader();
       removeContentTypeHeader();
       this.body=null;

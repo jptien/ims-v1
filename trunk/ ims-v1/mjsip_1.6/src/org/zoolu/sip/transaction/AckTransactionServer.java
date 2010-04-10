@@ -24,12 +24,14 @@
 package org.zoolu.sip.transaction;
 
 
-import org.zoolu.sip.address.SipURL;
-import org.zoolu.sip.provider.*;
-import org.zoolu.sip.message.*;
-import org.zoolu.tools.Timer;
-import org.zoolu.tools.TimerListener;
+import org.zoolu.sip.message.BaseSipMethods;
+import org.zoolu.sip.message.Message;
+import org.zoolu.sip.provider.ConnectionIdentifier;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
+import org.zoolu.sip.provider.TransactionIdentifier;
 import org.zoolu.tools.LogLevel;
+import org.zoolu.tools.Timer;
 
 
 /** ACK server transaction should follow an INVITE server transaction within an INVITE Dialog in a SIP UAC.
@@ -57,7 +59,7 @@ public class AckTransactionServer extends Transaction
    public AckTransactionServer(SipProvider sip_provider, Message resp, AckTransactionServerListener listener)
    {  super(sip_provider);
       response=resp;
-      init(listener,new TransactionIdentifier(SipMethods.ACK),null);
+      init(listener,new TransactionIdentifier(BaseSipMethods.ACK),null);
    }  
 
    /** Creates a new AckTransactionServer.
@@ -66,7 +68,7 @@ public class AckTransactionServer extends Transaction
    public AckTransactionServer(SipProvider sip_provider, ConnectionIdentifier connection_id, Message resp, AckTransactionServerListener listener)
    {  super(sip_provider);
       response=resp;
-      init(listener,new TransactionIdentifier(SipMethods.ACK),connection_id);
+      init(listener,new TransactionIdentifier(BaseSipMethods.ACK),connection_id);
    }  
 
    /** Initializes timeouts and listener. */
@@ -99,7 +101,8 @@ public class AckTransactionServer extends Transaction
    /** Method derived from interface TimerListener.
      * It's fired from an active Timer.
      */
-   public void onTimeout(Timer to)
+   @Override
+public void onTimeout(Timer to)
    {  try
       {  if (to.equals(retransmission_to) && statusIs(STATE_PROCEEDING))
          {  printLog("Retransmission timeout expired",LogLevel.HIGH);
@@ -125,7 +128,8 @@ public class AckTransactionServer extends Transaction
    }   
 
    /** Method used to drop an active transaction. */
-   public void terminate()
+   @Override
+public void terminate()
    {  retransmission_to.halt();
       transaction_to.halt();  
       changeStatus(STATE_TERMINATED);
@@ -140,7 +144,8 @@ public class AckTransactionServer extends Transaction
    //**************************** Logs ****************************/
 
    /** Adds a new string to the default Log */
-   protected void printLog(String str, int level)
+   @Override
+protected void printLog(String str, int level)
    {  if (log!=null) log.println("AckTransactionServer#"+transaction_sqn+": "+str,level+SipStack.LOG_LEVEL_TRANSACTION);  
    }
 

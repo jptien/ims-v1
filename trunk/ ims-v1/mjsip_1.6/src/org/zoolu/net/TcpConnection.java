@@ -25,7 +25,12 @@ package org.zoolu.net;
 
 
 //import java.net.InetAddress;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InterruptedIOException;
+import java.io.OutputStream;
 
 
 /** TcpConnection provides a TCP connection oriented transport service.
@@ -148,7 +153,8 @@ public class TcpConnection extends Thread
 
 
    /** Runs the tcp receiver */
-   public void run()
+   @Override
+public void run()
    {
       byte[] buff=new byte[BUFFER_SIZE];
       long expire=0;
@@ -192,7 +198,8 @@ public class TcpConnection extends Thread
 
  
    /** Gets a String representation of the Object */
-   public String toString()
+   @Override
+public String toString()
    {  return "tcp:"+socket.getLocalAddress()+":"+socket.getLocalPort()+"<->"+socket.getAddress()+":"+socket.getPort();
    }
 

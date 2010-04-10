@@ -59,7 +59,7 @@ public class ViaHeader extends ParametricHeader
    //}
 
    public ViaHeader(String hvalue)
-   {  super(SipHeaders.Via,hvalue);
+   {  super(BaseSipHeaders.Via,hvalue);
    }
 
    public ViaHeader(Header hd)
@@ -67,7 +67,7 @@ public class ViaHeader extends ParametricHeader
    }
 
    public ViaHeader(String host, int port)
-   {  super(SipHeaders.Via,"SIP/2.0/UDP "+host+":"+port);
+   {  super(BaseSipHeaders.Via,"SIP/2.0/UDP "+host+":"+port);
    }
 
    /*public ViaHeader(String host, int port, String branch)
@@ -75,7 +75,7 @@ public class ViaHeader extends ParametricHeader
    }*/
 
    public ViaHeader(String proto, String host, int port)
-   {  super(SipHeaders.Via,"SIP/2.0/"+proto.toUpperCase()+" "+host+":"+port);
+   {  super(BaseSipHeaders.Via,"SIP/2.0/"+proto.toUpperCase()+" "+host+":"+port);
    }
 
    /*public ViaHeader(String proto, String host, int port, String branch)

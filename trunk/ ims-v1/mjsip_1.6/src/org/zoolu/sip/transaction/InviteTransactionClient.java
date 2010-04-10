@@ -24,12 +24,13 @@
 package org.zoolu.sip.transaction;
 
 
-import org.zoolu.sip.address.SipURL;
-import org.zoolu.sip.provider.*;
-import org.zoolu.sip.message.*;
-import org.zoolu.tools.Timer;
-import org.zoolu.tools.TimerListener;
+import org.zoolu.sip.message.BaseMessageFactory;
+import org.zoolu.sip.message.Message;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
+import org.zoolu.sip.provider.TransactionIdentifier;
 import org.zoolu.tools.LogLevel;
+import org.zoolu.tools.Timer;
 
 
 /** INVITE  client transaction as defined in RFC 3261 (Section 17.2.1).
@@ -63,7 +64,8 @@ public class InviteTransactionClient extends TransactionClient
    }  
 
    /** Initializes timeouts and listener. */
-   void init(TransactionClientListener listener, TransactionIdentifier transaction_id)
+   @Override
+void init(TransactionClientListener listener, TransactionIdentifier transaction_id)
    {  this.transaction_listener=listener;
       this.transaction_id=transaction_id;
       this.ack=null;
@@ -75,7 +77,8 @@ public class InviteTransactionClient extends TransactionClient
    }   
    
    /** Starts the InviteTransactionClient and sends the invite request. */
-   public void request()
+   @Override
+public void request()
    {  printLog("start",LogLevel.LOW);
       changeStatus(STATE_TRYING); 
       retransmission_to.start();
@@ -88,7 +91,8 @@ public class InviteTransactionClient extends TransactionClient
    /** Method derived from interface SipListener.
      * It's fired from the SipProvider when a new message is catch for to the present ServerTransaction.
      */
-   public void onReceivedMessage(SipProvider provider, Message msg)
+   @Override
+public void onReceivedMessage(SipProvider provider, Message msg)
    {  if (msg.isResponse())
       {  int code=msg.getStatusLine().getCode();
          if (code>=100 && code<200 && (statusIs(STATE_TRYING) || statusIs(STATE_PROCEEDING)))
@@ -104,7 +108,7 @@ public class InviteTransactionClient extends TransactionClient
          {  if (statusIs(STATE_TRYING) || statusIs(STATE_PROCEEDING))
             {  retransmission_to.halt();
                transaction_to.halt();
-               ack=MessageFactory.createNon2xxAckRequest(sip_provider,request,msg);
+               ack=BaseMessageFactory.createNon2xxAckRequest(sip_provider,request,msg);
                changeStatus(STATE_COMPLETED);
                if (transaction_listener!=null) transaction_listener.onTransFailureResponse(this,msg);
                transaction_listener=null;
@@ -136,7 +140,8 @@ public class InviteTransactionClient extends TransactionClient
 
    /** Method derived from interface TimerListener.
      * It's fired from an active Timer. */
-   public void onTimeout(Timer to)
+   @Override
+public void onTimeout(Timer to)
    {  try
       {  if (to.equals(retransmission_to) && statusIs(STATE_TRYING))
          {  printLog("Retransmission timeout expired",LogLevel.HIGH);
@@ -173,7 +178,8 @@ public class InviteTransactionClient extends TransactionClient
    }
 
    /** Terminates the transaction. */
-   public void terminate()
+   @Override
+public void terminate()
    {  if (!statusIs(STATE_TERMINATED))
       {  retransmission_to.halt();
          transaction_to.halt();     

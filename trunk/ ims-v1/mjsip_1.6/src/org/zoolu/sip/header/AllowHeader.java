@@ -31,7 +31,7 @@ import java.util.Vector;
 public class AllowHeader extends ListHeader
 {
    public AllowHeader(String hvalue)
-   {  super(SipHeaders.Allow,hvalue);
+   {  super(BaseSipHeaders.Allow,hvalue);
    }
 
    public AllowHeader(Header hd)

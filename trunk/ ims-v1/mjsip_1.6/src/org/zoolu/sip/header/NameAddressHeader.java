@@ -24,7 +24,8 @@
 package org.zoolu.sip.header;
 
 
-import org.zoolu.sip.address.*;
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.address.SipURL;
 import org.zoolu.sip.provider.SipParser;
 import org.zoolu.tools.Parser;
 
@@ -70,7 +71,8 @@ public abstract class NameAddressHeader extends ParametricHeader
    
    /** Returns the index of the first semicolon before the first parameter.
      * @returns the index of the semicolon before the first parameter, or -1 if no parameter is present. */
-   protected int indexOfFirstSemi()
+   @Override
+protected int indexOfFirstSemi()
    {  Parser par=new Parser(value);
       par.goToSkippingQuoted('>');
       if (par.getPos()==value.length()) par.setPos(0);

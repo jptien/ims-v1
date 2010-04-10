@@ -6,6 +6,7 @@ import org.zoolu.sip.header.AuthorizationHeader;
 import org.zoolu.sip.header.ProxyAuthorizationHeader;
 import org.zoolu.sip.header.WwwAuthenticateHeader;
 import org.zoolu.tools.MD5;
+import org.zoolu.tools.MessageDigest;
 
 
 /** The HTTP Digest Authentication as defined in RFC2617.
@@ -76,7 +77,8 @@ public class DigestAuthentication
 
 
    /** Gets a String representation of the object. */
-   public String toString()
+   @Override
+public String toString()
    {  StringBuffer sb=new StringBuffer();
       sb.append("method=").append(method).append("\n");
       sb.append("username=").append(username).append("\n");
@@ -234,7 +236,7 @@ public class DigestAuthentication
 
    /** Calculates the HEX of an array of bytes. */
    private static String HEX(byte[] bb)
-   {  return MD5.asHex(bb);
+   {  return MessageDigest.asHex(bb);
    }
 
 

@@ -24,9 +24,6 @@
 package org.zoolu.sip.provider;
 
 
-import org.zoolu.sip.message.Message;
-
-
 /** DialogIdentifier is used to address specific dialogs to the SipProvider.
   */
 public class DialogIdentifier extends Identifier

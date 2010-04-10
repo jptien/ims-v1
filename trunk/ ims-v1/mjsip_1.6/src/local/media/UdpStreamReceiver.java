@@ -22,11 +22,10 @@
 package local.media;
 
 
+import java.io.OutputStream;
+
 import org.zoolu.net.UdpPacket;
 import org.zoolu.net.UdpSocket;
-import org.zoolu.net.IpAddress;
-
-import java.io.*;
 
 
 /** UdpStreamReceiver is a generic stream receiver.
@@ -94,7 +93,8 @@ public class UdpStreamReceiver extends Thread
    }
 
    /** Runs it in a new Thread. */
-   public void run()
+   @Override
+public void run()
    {
       if (udp_socket==null)
       {  if (DEBUG) println("ERROR: RTP socket is null");

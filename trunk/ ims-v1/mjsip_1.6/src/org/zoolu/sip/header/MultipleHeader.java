@@ -24,8 +24,9 @@
 package org.zoolu.sip.header;
 
 
-import org.zoolu.sip.provider.SipParser;
 import java.util.Vector;
+
+import org.zoolu.sip.provider.SipParser;
 
 
 /** MultipleHeader can be used to handle SIP headers that support comma-separated (multiple-header) rapresentation,
@@ -119,12 +120,14 @@ public class MultipleHeader
    }
 
    /** Creates and returns a copy of Header */
-   public Object clone()
+   @Override
+public Object clone()
    {  return new MultipleHeader(getName(),getValues());
    }
 
    /** Indicates whether some other Object is "equal to" this Header */
-   public boolean equals(Object obj)
+   @Override
+public boolean equals(Object obj)
    {  MultipleHeader hd=(MultipleHeader)obj;
       if (hd.getName().equals(this.getName()) && hd.getValues().equals(this.getValues())) return true;
          else return false;
@@ -228,7 +231,8 @@ public class MultipleHeader
     *  - empty String (i.e. ""), for multi-headers(extended) rapresentation,
     *  - empty-value Header (i.e. "HeaderName: \r\n"), for comma-separated(compact) rapresentation.
    */
-   public String toString()
+   @Override
+public String toString()
    {  if (compact)
       {  String str=name+": ";
          for (int i=0; i<values.size()-1; i++) str+=values.elementAt(i)+", ";

@@ -1,9 +1,9 @@
 package local.ua;
 
 
-import org.zoolu.tools.Configure;
 import java.util.Vector;
-import java.io.*;
+
+import org.zoolu.tools.Configure;
 
 
 /** Classs StringList handles a vector of Strings.
@@ -99,13 +99,15 @@ public final class StringList extends Configure
    
        
    /** Parses a single line (loaded from the config file) */
-   protected void parseLine(String line)
+   @Override
+protected void parseLine(String line)
    {  list.addElement(line);
    }
 
 
    /** Converts the entire object into lines (to be saved into the config file) */
-   protected String toLines()
+   @Override
+protected String toLines()
    {  String str="";
       for (int i=0; i<list.size(); i++)     
       {  String elem=(String)list.elementAt(i);

@@ -24,8 +24,8 @@
 package org.zoolu.net;
 
 
-import java.net.ServerSocket;
 import java.io.InterruptedIOException;
+import java.net.ServerSocket;
 
 
 
@@ -107,7 +107,8 @@ public class TcpServer extends Thread
 
 
    /** Runs the server */
-   public void run()
+   @Override
+public void run()
    {  Exception error=null;
       try
       {  server_socket.setSoTimeout(socket_timeout);         
@@ -144,7 +145,8 @@ public class TcpServer extends Thread
 
 
    /** Gets a String representation of the Object */
-   public String toString()
+   @Override
+public String toString()
    {  return "tcp:"+server_socket.getInetAddress()+":"+server_socket.getLocalPort();
    }   
 

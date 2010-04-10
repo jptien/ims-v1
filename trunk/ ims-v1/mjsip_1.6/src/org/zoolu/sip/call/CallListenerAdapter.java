@@ -24,16 +24,11 @@
 package org.zoolu.sip.call;
 
 
-import org.zoolu.sip.call.*;
-import org.zoolu.sip.provider.SipStack;
+import java.util.Vector;
+
+import org.zoolu.sdp.SessionDescriptor;
 import org.zoolu.sip.address.NameAddress;
 import org.zoolu.sip.message.Message;
-import org.zoolu.tools.Log;
-import org.zoolu.tools.LogLevel;
-import org.zoolu.sdp.*;
-//import java.util.Iterator;
-import java.util.Enumeration;
-import java.util.Vector;
 
 
 /** Class CallListenerAdapter implements CallListener interface

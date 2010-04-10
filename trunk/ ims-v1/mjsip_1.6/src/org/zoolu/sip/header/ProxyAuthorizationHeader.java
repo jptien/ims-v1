@@ -33,7 +33,7 @@ public class ProxyAuthorizationHeader extends AuthorizationHeader
    /** Creates a new ProxyAuthorizationHeader */
    public ProxyAuthorizationHeader(String hvalue)
    {  super(hvalue);
-      name=SipHeaders.Proxy_Authorization;
+      name=BaseSipHeaders.Proxy_Authorization;
    }
 
    /** Creates a new ProxyAuthorizationHeader */
@@ -46,6 +46,6 @@ public class ProxyAuthorizationHeader extends AuthorizationHeader
      * <p> <i>auth_param</i> is a vector of String of the form <i>parm_name</i> "=" <i>parm_value</i> */
    public ProxyAuthorizationHeader(String auth_scheme, Vector auth_params)
    {  super(auth_scheme,auth_params);
-      name=SipHeaders.Proxy_Authorization;
+      name=BaseSipHeaders.Proxy_Authorization;
    }
 }

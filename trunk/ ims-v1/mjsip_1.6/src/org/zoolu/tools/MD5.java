@@ -202,7 +202,8 @@ public class MD5 extends MessageDigest
    /** MessageDigest block update operation.
      * Continues a message-digest operation,
      * processing another message block, and updating the context. */
-   public MessageDigest update(byte[] buffer, int offset, int len)
+   @Override
+public MessageDigest update(byte[] buffer, int offset, int len)
    {
       if (message_digest!=null) return this;
       //else
@@ -241,7 +242,8 @@ public class MD5 extends MessageDigest
 
    /** MessageDigest finalization. Ends a message-digest operation, writing the
      * the message digest and zeroizing the context. */
-   public byte[] doFinal()
+   @Override
+public byte[] doFinal()
    {
       if (message_digest!=null) return message_digest;
       //else
@@ -281,70 +283,70 @@ public class MD5 extends MessageDigest
       int d=state[3];
 
       int[] x=new int[16];
-      x[0]=((int) (block[0] & 0xff)) |
-          (((int) (block[1] & 0xff)) << 8) |
-          (((int) (block[2] & 0xff)) << 16) |
-          (((int) (block[3])) << 24);
-      x[1]=((int) (block[4] & 0xff)) |
-          (((int) (block[5] & 0xff)) << 8) |
-          (((int) (block[6] & 0xff)) << 16) |
-          (((int) (block[7])) << 24);
-      x[2]=((int) (block[8] & 0xff)) |
-          (((int) (block[9] & 0xff)) << 8) |
-          (((int) (block[10] & 0xff)) << 16) |
-          (((int) (block[11])) << 24);
-      x[3]=((int) (block[12] & 0xff)) |
-          (((int) (block[13] & 0xff)) << 8) |
-          (((int) (block[14] & 0xff)) << 16) |
-          (((int) (block[15])) << 24);
-      x[4]=((int) (block[16] & 0xff)) |
-          (((int) (block[17] & 0xff)) << 8) |
-          (((int) (block[18] & 0xff)) << 16) |
-          (((int) (block[19])) << 24);
-      x[5]=((int) (block[20] & 0xff)) |
-          (((int) (block[21] & 0xff)) << 8) |
-          (((int) (block[22] & 0xff)) << 16) |
-          (((int) (block[23])) << 24);
-      x[6]=((int) (block[24] & 0xff)) |
-          (((int) (block[25] & 0xff)) << 8) |
-          (((int) (block[26] & 0xff)) << 16) |
-          (((int) (block[27])) << 24);
-      x[7]=((int) (block[28] & 0xff)) |
-          (((int) (block[29] & 0xff)) << 8) |
-          (((int) (block[30] & 0xff)) << 16) |
-          (((int) (block[31])) << 24);
-      x[8]=((int) (block[32] & 0xff)) |
-          (((int) (block[33] & 0xff)) << 8) |
-          (((int) (block[34] & 0xff)) << 16) |
-          (((int) (block[35])) << 24);
-      x[9]=((int) (block[36] & 0xff)) |
-          (((int) (block[37] & 0xff)) << 8) |
-          (((int) (block[38] & 0xff)) << 16) |
-          (((int) (block[39])) << 24);
-      x[10]=((int)(block[40] & 0xff)) |
-          (((int) (block[41] & 0xff)) << 8) |
-          (((int) (block[42] & 0xff)) << 16) |
-          (((int) (block[43])) << 24);
-      x[11]=((int)(block[44] & 0xff)) |
-          (((int) (block[45] & 0xff)) << 8) |
-          (((int) (block[46] & 0xff)) << 16) |
-          (((int) (block[47])) << 24);
-      x[12]=((int)(block[48] & 0xff)) |
-          (((int) (block[49] & 0xff)) << 8) |
-          (((int) (block[50] & 0xff)) << 16) |
-          (((int) (block[51])) << 24);
-      x[13]=((int)(block[52] & 0xff)) |
-          (((int) (block[53] & 0xff)) << 8) |
-          (((int) (block[54] & 0xff)) << 16) |
-          (((int) (block[55])) << 24);
-      x[14]=((int)(block[56] & 0xff)) |
-          (((int) (block[57] & 0xff)) << 8) |
-          (((int) (block[58] & 0xff)) << 16) |
-          (((int) (block[59])) << 24);
-      x[15]=((int)(block[60] & 0xff)) |
-          (((int) (block[61] & 0xff)) << 8) |
-          (((int) (block[62] & 0xff)) << 16) |
-          (((int) (block[63])) << 24);
+      x[0]=((block[0] & 0xff)) |
+          (((block[1] & 0xff)) << 8) |
+          (((block[2] & 0xff)) << 16) |
+          (((block[3])) << 24);
+      x[1]=((block[4] & 0xff)) |
+          (((block[5] & 0xff)) << 8) |
+          (((block[6] & 0xff)) << 16) |
+          (((block[7])) << 24);
+      x[2]=((block[8] & 0xff)) |
+          (((block[9] & 0xff)) << 8) |
+          (((block[10] & 0xff)) << 16) |
+          (((block[11])) << 24);
+      x[3]=((block[12] & 0xff)) |
+          (((block[13] & 0xff)) << 8) |
+          (((block[14] & 0xff)) << 16) |
+          (((block[15])) << 24);
+      x[4]=((block[16] & 0xff)) |
+          (((block[17] & 0xff)) << 8) |
+          (((block[18] & 0xff)) << 16) |
+          (((block[19])) << 24);
+      x[5]=((block[20] & 0xff)) |
+          (((block[21] & 0xff)) << 8) |
+          (((block[22] & 0xff)) << 16) |
+          (((block[23])) << 24);
+      x[6]=((block[24] & 0xff)) |
+          (((block[25] & 0xff)) << 8) |
+          (((block[26] & 0xff)) << 16) |
+          (((block[27])) << 24);
+      x[7]=((block[28] & 0xff)) |
+          (((block[29] & 0xff)) << 8) |
+          (((block[30] & 0xff)) << 16) |
+          (((block[31])) << 24);
+      x[8]=((block[32] & 0xff)) |
+          (((block[33] & 0xff)) << 8) |
+          (((block[34] & 0xff)) << 16) |
+          (((block[35])) << 24);
+      x[9]=((block[36] & 0xff)) |
+          (((block[37] & 0xff)) << 8) |
+          (((block[38] & 0xff)) << 16) |
+          (((block[39])) << 24);
+      x[10]=((block[40] & 0xff)) |
+          (((block[41] & 0xff)) << 8) |
+          (((block[42] & 0xff)) << 16) |
+          (((block[43])) << 24);
+      x[11]=((block[44] & 0xff)) |
+          (((block[45] & 0xff)) << 8) |
+          (((block[46] & 0xff)) << 16) |
+          (((block[47])) << 24);
+      x[12]=((block[48] & 0xff)) |
+          (((block[49] & 0xff)) << 8) |
+          (((block[50] & 0xff)) << 16) |
+          (((block[51])) << 24);
+      x[13]=((block[52] & 0xff)) |
+          (((block[53] & 0xff)) << 8) |
+          (((block[54] & 0xff)) << 16) |
+          (((block[55])) << 24);
+      x[14]=((block[56] & 0xff)) |
+          (((block[57] & 0xff)) << 8) |
+          (((block[58] & 0xff)) << 16) |
+          (((block[59])) << 24);
+      x[15]=((block[60] & 0xff)) |
+          (((block[61] & 0xff)) << 8) |
+          (((block[62] & 0xff)) << 16) |
+          (((block[63])) << 24);
                  
       /* Round 1 */
       a+= ((b & c) | (~b & d)) + x[ 0] + 0xd76aa478;

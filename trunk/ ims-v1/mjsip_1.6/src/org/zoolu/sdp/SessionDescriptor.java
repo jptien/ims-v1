@@ -25,12 +25,6 @@ package org.zoolu.sdp;
 
 
 import java.util.Vector;
-import java.util.Enumeration;
-//PersonalJava
-//import java.util.HashSet;
-//import java.util.Iterator;
-import org.zoolu.tools.HashSet;
-import org.zoolu.tools.Iterator;
 
 
 /** Class SessionDescriptor handles SIP message bodys formatted according to
@@ -323,7 +317,7 @@ public class SessionDescriptor
    public Vector getAttributes()
    {  Vector v=new Vector(av.size());
       for (int i=0; i<av.size(); i++)
-         v.addElement((AttributeField)av.elementAt(i));
+         v.addElement(av.elementAt(i));
       return v;
    } 
 
@@ -362,7 +356,8 @@ public class SessionDescriptor
 
 
    /** Gets a String rapresentation */
-   public String toString()
+   @Override
+public String toString()
    {  //String str=v.toString()+o.toString()+s.toString();
       StringBuffer sb=new StringBuffer();
       if (v!=null) sb.append(v.toString());

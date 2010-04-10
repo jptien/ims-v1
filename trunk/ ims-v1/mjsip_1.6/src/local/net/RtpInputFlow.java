@@ -22,8 +22,8 @@
 package local.net;
 
 
-import java.net.DatagramSocket;
 import java.io.IOException;
+import java.net.DatagramSocket;
 
 
 /** This class represents a RTP flow for receiving rtp packets. 

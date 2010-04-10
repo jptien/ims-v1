@@ -29,7 +29,7 @@ package org.zoolu.sip.header;
 public class AlertInfoHeader extends ParametricHeader
 {
    public AlertInfoHeader(String absolute_uri)
-   {  super(SipHeaders.Alert_Info,null);
+   {  super(BaseSipHeaders.Alert_Info,null);
       setAbsoluteURI(absolute_uri);
    }
 

@@ -23,18 +23,28 @@
 
 package org.zoolu.sip.message;
 
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.header.*;
-import org.zoolu.sip.dialog.Dialog;
-import org.zoolu.sip.provider.SipStack;
-import org.zoolu.sip.provider.SipProvider;
-import org.zoolu.sip.message.Message;
-import org.zoolu.sip.message.SipMethods;
-import org.zoolu.sip.message.SipResponses;
-
-import sun.misc.Regexp;
-
 import java.util.Vector;
+
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.address.SipURL;
+import org.zoolu.sip.dialog.Dialog;
+import org.zoolu.sip.header.BaseSipHeaders;
+import org.zoolu.sip.header.CSeqHeader;
+import org.zoolu.sip.header.CallIdHeader;
+import org.zoolu.sip.header.ContactHeader;
+import org.zoolu.sip.header.ExpiresHeader;
+import org.zoolu.sip.header.FromHeader;
+import org.zoolu.sip.header.MaxForwardsHeader;
+import org.zoolu.sip.header.MultipleHeader;
+import org.zoolu.sip.header.PAccessNetworkInfoHeader;
+import org.zoolu.sip.header.RequestLine;
+import org.zoolu.sip.header.ServerHeader;
+import org.zoolu.sip.header.StatusLine;
+import org.zoolu.sip.header.ToHeader;
+import org.zoolu.sip.header.UserAgentHeader;
+import org.zoolu.sip.header.ViaHeader;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
 
 /**
  * BaseMessageFactory is used to create SIP messages, requests and responses by
@@ -106,7 +116,7 @@ public abstract class BaseMessageFactory {
 		req.setCSeqHeader(new CSeqHeader(cseq, method));
 		// optional headers:
 		if (contact != null) {
-			MultipleHeader contacts = new MultipleHeader(SipHeaders.Contact);
+			MultipleHeader contacts = new MultipleHeader(BaseSipHeaders.Contact);
 			contacts.addBottom(new ContactHeader(contact));
 			// System.out.println("DEBUG: Contact: "+contact.toString());
 			req.setContacts(contacts);
@@ -241,7 +251,7 @@ public abstract class BaseMessageFactory {
 		if (contact == null)
 			contact = from;
 		// increment the CSeq, if method is not ACK nor CANCEL
-		if (!SipMethods.isAck(method) && !SipMethods.isCancel(method))
+		if (!BaseSipMethods.isAck(method) && !BaseSipMethods.isCancel(method))
 			dialog.incLocalCSeq();
 		String call_id = dialog.getCallID();
 		long cseq = dialog.getLocalCSeq();
@@ -253,7 +263,7 @@ public abstract class BaseMessageFactory {
 				remote_tag, null, body);
 		Vector route = dialog.getRoute();
 		if (route != null && route.size() > 0)
-			req.addRoutes(new MultipleHeader(SipHeaders.Route, route));
+			req.addRoutes(new MultipleHeader(BaseSipHeaders.Route, route));
 		req.rfc2543RouteAdapt();
 		return req;
 	}
@@ -272,7 +282,7 @@ public abstract class BaseMessageFactory {
 		// String branch=SipStack.pickBranch();
 		if (contact == null)
 			contact = from;
-		return createRequest(sip_provider, SipMethods.INVITE, request_uri, to,
+		return createRequest(sip_provider, BaseSipMethods.INVITE, request_uri, to,
 				from, contact, call_id, cseq, local_tag, null, null, body);
 	}
 
@@ -282,7 +292,7 @@ public abstract class BaseMessageFactory {
 	 * @see #createRequest(Dialog,String,String)
 	 */
 	public static Message createInviteRequest(Dialog dialog, String body) {
-		return createRequest(dialog, SipMethods.INVITE, body);
+		return createRequest(dialog, BaseSipMethods.INVITE, body);
 	}
 
 	/**
@@ -291,7 +301,7 @@ public abstract class BaseMessageFactory {
 	 * @see #createRequest(Dialog,String,String)
 	 */
 	public static Message create2xxAckRequest(Dialog dialog, String body) {
-		return createRequest(dialog, SipMethods.ACK, body);
+		return createRequest(dialog, BaseSipMethods.ACK, body);
 	}
 
 	/** Creates an ACK request for a non-2xx response */
@@ -310,7 +320,7 @@ public abstract class BaseMessageFactory {
 			proto = sip_provider.getDefaultTransport();
 		String branch = method.getViaHeader().getBranch();
 		NameAddress contact = null;
-		Message ack = createRequest(SipMethods.ACK, request_uri, to
+		Message ack = createRequest(BaseSipMethods.ACK, request_uri, to
 				.getNameAddress(), from.getNameAddress(), contact, proto,
 				via_addr, host_port, rport, method.getCallIdHeader()
 						.getCallId(), method.getCSeqHeader()
@@ -367,7 +377,7 @@ public abstract class BaseMessageFactory {
 		boolean rport = via.hasRport();
 		String proto = via.getProtocol();
 		String branch = method.getViaHeader().getBranch();
-		return createRequest(SipMethods.CANCEL, request_uri, to
+		return createRequest(BaseSipMethods.CANCEL, request_uri, to
 				.getNameAddress(), from.getNameAddress(), contact, proto,
 				host_addr, host_port, rport, method.getCallIdHeader()
 						.getCallId(), method.getCSeqHeader()
@@ -377,7 +387,7 @@ public abstract class BaseMessageFactory {
 
 	/** Creates a BYE request. */
 	public static Message createByeRequest(Dialog dialog) {
-		Message msg = createRequest(dialog, SipMethods.BYE, null);
+		Message msg = createRequest(dialog, BaseSipMethods.BYE, null);
 		msg.removeExpiresHeader();
 		msg.removeContacts();
 		return msg;
@@ -404,7 +414,7 @@ public abstract class BaseMessageFactory {
 		int cseq = SipProvider.pickInitialCSeq();
 		String local_tag = SipProvider.pickTag();
 		// String branch=SipStack.pickBranch();
-		Message req = createRequest(SipMethods.REGISTER, registrar, to, from,
+		Message req = createRequest(BaseSipMethods.REGISTER, registrar, to, from,
 				contact, proto, via_addr, host_port, rport, call_id, cseq,
 				local_tag, null, null, null);
 		// if no contact, deregister all

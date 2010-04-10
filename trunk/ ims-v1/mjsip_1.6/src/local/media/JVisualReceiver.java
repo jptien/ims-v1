@@ -1,14 +1,20 @@
 package local.media;
 
 
-import javax.media.*;
-import javax.media.format.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Panel;
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
-import java.util.Vector;
-import javax.swing.border.Border;
+import javax.media.ControllerEvent;
+import javax.media.RealizeCompleteEvent;
+import javax.media.format.FormatChangeEvent;
+import javax.swing.JPanel;
 
 
 
@@ -54,7 +60,8 @@ public class JVisualReceiver extends Frame implements JMediaReceiverListener
       this.setTitle("Zoolu Player");
       this.setIconImage(icon);
       this.addWindowListener(new java.awt.event.WindowAdapter()
-      {  public void windowClosing(WindowEvent e) { this_windowClosing(); }
+      {  @Override
+	public void windowClosing(WindowEvent e) { this_windowClosing(); }
       });
       visualComp=new ImagePanel(image);
       panel.setLayout(new BorderLayout());
@@ -121,7 +128,8 @@ class ImagePanel extends JPanel
 
    public ImagePanel(Image image) { this.image = image; }
 
-   public void paintComponent(Graphics g)
+   @Override
+public void paintComponent(Graphics g)
    {  super.paintComponent(g); //paint background
       int x=this.getWidth();
       int y=this.getHeight();

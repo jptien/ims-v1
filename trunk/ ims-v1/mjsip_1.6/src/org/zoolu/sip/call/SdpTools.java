@@ -24,9 +24,12 @@
 package org.zoolu.sip.call;
 
 
-import org.zoolu.sdp.*;
 import java.util.Enumeration;
 import java.util.Vector;
+
+import org.zoolu.sdp.AttributeField;
+import org.zoolu.sdp.MediaDescriptor;
+import org.zoolu.sdp.SessionDescriptor;
 
 
 /** Class SdpTools collects some static methods for managing SDP materials.

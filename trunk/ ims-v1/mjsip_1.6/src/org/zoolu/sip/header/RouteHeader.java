@@ -35,7 +35,7 @@ public class RouteHeader extends NameAddressHeader
    //}
 
    public RouteHeader(NameAddress nameaddr)
-   {  super(SipHeaders.Route,nameaddr);
+   {  super(BaseSipHeaders.Route,nameaddr);
    }
 
    public RouteHeader(Header hd)

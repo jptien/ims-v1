@@ -49,7 +49,8 @@ public class Identifier
    }
 
    /** Whether the Identifier equals to <i>obj</i>. */
-   public boolean equals(Object obj)
+   @Override
+public boolean equals(Object obj)
    {  try
       {  Identifier i=(Identifier)obj;
          return id.equals(i.id);
@@ -58,12 +59,14 @@ public class Identifier
    }
 
    /** Gets an int hashCode for the Identifier. */
-   public int hashCode()
+   @Override
+public int hashCode()
    {  return id.hashCode();
    }
 
    /** Gets a String value for the Identifier */ 
-   public String toString()
+   @Override
+public String toString()
    {  return id;
    }
 }

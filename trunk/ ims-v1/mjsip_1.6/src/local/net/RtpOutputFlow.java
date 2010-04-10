@@ -22,10 +22,9 @@
 package local.net;
 
 
+import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.DatagramSocket; 
-import java.io.IOException; 
-//import org.zoolu.tools.Random;
 
 
 /** This class represents a RTP flow for sending rtp packets. 

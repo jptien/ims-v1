@@ -1,9 +1,9 @@
 package local.ua;
 
 
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.provider.SipStack;
+import org.zoolu.sip.address.NameAddress;
 import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
 import org.zoolu.tools.Configure;
 import org.zoolu.tools.Parser;
 
@@ -176,7 +176,8 @@ public class UserAgentProfile extends Configure
    // *********************** Protected methods **********************
 
    /** Parses a single line (loaded from the config file) */
-   protected void parseLine(String line)
+   @Override
+protected void parseLine(String line)
    {  String attribute;
       Parser par;
       int index=line.indexOf("=");
@@ -237,7 +238,8 @@ public class UserAgentProfile extends Configure
 
 
    /** Converts the entire object into lines (to be saved into the config file) */
-   protected String toLines()
+   @Override
+protected String toLines()
    {  // currently not implemented..
       return contact_url;
    }

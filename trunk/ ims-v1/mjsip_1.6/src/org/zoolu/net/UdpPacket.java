@@ -25,7 +25,6 @@ package org.zoolu.net;
 
 
 import java.net.DatagramPacket;
-//import java.net.InetAddress;
 
 
 /** UdpPacket provides a uniform interface to UDP packets,

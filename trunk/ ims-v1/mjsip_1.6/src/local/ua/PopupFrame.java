@@ -2,9 +2,18 @@ package local.ua;
 
 
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Image;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 
 
 
@@ -64,7 +73,8 @@ public class PopupFrame extends Frame
    {  this.setTitle(title);
       this.setResizable(false);
       this.addWindowListener(new java.awt.event.WindowAdapter()
-      {  public void windowClosing(WindowEvent e) { closeWindow(); }
+      {  @Override
+	public void windowClosing(WindowEvent e) { closeWindow(); }
       });
       button1.setLabel("OK");
       button1.addActionListener(new java.awt.event.ActionListener()

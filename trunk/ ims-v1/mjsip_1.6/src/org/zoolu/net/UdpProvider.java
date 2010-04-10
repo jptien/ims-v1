@@ -151,7 +151,8 @@ public class UdpProvider extends Thread
 
 
    /** The main thread */
-   public void run()
+   @Override
+public void run()
    {  
       byte[] buf=new byte[BUFFER_SIZE];
       UdpPacket packet=new UdpPacket(buf, buf.length);
@@ -188,7 +189,8 @@ public class UdpProvider extends Thread
 
    
    /** Gets a String representation of the Object */
-   public String toString()
+   @Override
+public String toString()
    {  return "udp:"+socket.getLocalAddress()+":"+socket.getLocalPort();
    }
 

@@ -23,12 +23,45 @@
 
 package org.zoolu.sip.message;
 
-import org.zoolu.sip.provider.*;
-import org.zoolu.sip.header.*;
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.message.SipMethods;
+import java.util.Vector;
+
 import org.zoolu.net.UdpPacket;
-import java.util.*;
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.address.SipURL;
+import org.zoolu.sip.header.AcceptHeader;
+import org.zoolu.sip.header.AlertInfoHeader;
+import org.zoolu.sip.header.AllowHeader;
+import org.zoolu.sip.header.AuthenticationInfoHeader;
+import org.zoolu.sip.header.AuthorizationHeader;
+import org.zoolu.sip.header.BaseSipHeaders;
+import org.zoolu.sip.header.CSeqHeader;
+import org.zoolu.sip.header.CallIdHeader;
+import org.zoolu.sip.header.ContactHeader;
+import org.zoolu.sip.header.ContentLengthHeader;
+import org.zoolu.sip.header.ContentTypeHeader;
+import org.zoolu.sip.header.DateHeader;
+import org.zoolu.sip.header.ExpiresHeader;
+import org.zoolu.sip.header.FromHeader;
+import org.zoolu.sip.header.Header;
+import org.zoolu.sip.header.MaxForwardsHeader;
+import org.zoolu.sip.header.MultipleHeader;
+import org.zoolu.sip.header.ProxyAuthenticateHeader;
+import org.zoolu.sip.header.ProxyAuthorizationHeader;
+import org.zoolu.sip.header.RecordRouteHeader;
+import org.zoolu.sip.header.RequestLine;
+import org.zoolu.sip.header.RouteHeader;
+import org.zoolu.sip.header.ServerHeader;
+import org.zoolu.sip.header.StatusLine;
+import org.zoolu.sip.header.SubjectHeader;
+import org.zoolu.sip.header.ToHeader;
+import org.zoolu.sip.header.UserAgentHeader;
+import org.zoolu.sip.header.ViaHeader;
+import org.zoolu.sip.header.WwwAuthenticateHeader;
+import org.zoolu.sip.provider.ConnectionIdentifier;
+import org.zoolu.sip.provider.DialogIdentifier;
+import org.zoolu.sip.provider.MethodIdentifier;
+import org.zoolu.sip.provider.SipParser;
+import org.zoolu.sip.provider.TransactionIdentifier;
 
 /** Class BaseMessage implements a generic SIP Message. */
 public abstract class BaseMessage {
@@ -106,6 +139,7 @@ public abstract class BaseMessage {
 	}
 
 	/** Creates and returns a clone of the Message */
+	@Override
 	abstract public Object clone();
 
 	// { return new Message(message);
@@ -117,6 +151,7 @@ public abstract class BaseMessage {
 	}
 
 	/** Gets string representation of Message */
+	@Override
 	public String toString() {
 		return message;
 	}
@@ -247,37 +282,37 @@ public abstract class BaseMessage {
 
 	/** Whether Message is an Invite */
 	public boolean isInvite() {
-		return isRequest(SipMethods.INVITE);
+		return isRequest(BaseSipMethods.INVITE);
 	}
 
 	/** Whether Message is a Register */
 	public boolean isRegister() {
-		return isRequest(SipMethods.REGISTER);
+		return isRequest(BaseSipMethods.REGISTER);
 	}
 
 	/** Whether Message is a Cancel */
 	public boolean isCancel() {
-		return isRequest(SipMethods.CANCEL);
+		return isRequest(BaseSipMethods.CANCEL);
 	}
 
 	/** Whether Message is a Bye */
 	public boolean isBye() {
-		return isRequest(SipMethods.BYE);
+		return isRequest(BaseSipMethods.BYE);
 	}
 
 	/** Whether Message is an Ack */
 	public boolean isAck() {
-		return isRequest(SipMethods.ACK);
+		return isRequest(BaseSipMethods.ACK);
 	}
 
 	/** Whether Message is an Info */
 	public boolean isInfo() {
-		return isRequest(SipMethods.INFO);
+		return isRequest(BaseSipMethods.INFO);
 	}
 
 	/** Whether Message is an Option */
 	public boolean isOption() {
-		return isRequest(SipMethods.OPTION);
+		return isRequest(BaseSipMethods.OPTION);
 	}
 
 	/** Whether Message has Request-line */
@@ -470,11 +505,11 @@ public abstract class BaseMessage {
 			i = par.goToEndOfLastHeader().goToNextLine().getPos();
 			par = new SipParser(message);
 			// if Content_Length is present, jump before
-			aux = par.indexOfHeader(SipHeaders.Content_Length);
+			aux = par.indexOfHeader(BaseSipHeaders.Content_Length);
 			if (aux < i)
 				i = aux;
 			// if Content_Type is present, jump before
-			aux = par.indexOfHeader(SipHeaders.Content_Type);
+			aux = par.indexOfHeader(BaseSipHeaders.Content_Type);
 			if (aux < i)
 				i = aux;
 		}
@@ -642,12 +677,12 @@ public abstract class BaseMessage {
 
 	/** Whether Message has MaxForwardsHeader */
 	public boolean hasMaxForwardsHeader() {
-		return hasHeader(SipHeaders.Max_Forwards);
+		return hasHeader(BaseSipHeaders.Max_Forwards);
 	}
 
 	/** Gets MaxForwardsHeader of Message */
 	public MaxForwardsHeader getMaxForwardsHeader() {
-		Header h = getHeader(SipHeaders.Max_Forwards);
+		Header h = getHeader(BaseSipHeaders.Max_Forwards);
 		if (h == null)
 			return null;
 		else
@@ -661,17 +696,17 @@ public abstract class BaseMessage {
 
 	/** Removes MaxForwardsHeader from Message */
 	public void removeMaxForwardsHeader() {
-		removeHeader(SipHeaders.Max_Forwards);
+		removeHeader(BaseSipHeaders.Max_Forwards);
 	}
 
 	/** Whether Message has FromHeader */
 	public boolean hasFromHeader() {
-		return hasHeader(SipHeaders.From);
+		return hasHeader(BaseSipHeaders.From);
 	}
 
 	/** Gets FromHeader of Message */
 	public FromHeader getFromHeader() {
-		Header h = getHeader(SipHeaders.From);
+		Header h = getHeader(BaseSipHeaders.From);
 		if (h == null)
 			return null;
 		else
@@ -685,17 +720,17 @@ public abstract class BaseMessage {
 
 	/** Removes FromHeader from Message */
 	public void removeFromHeader() {
-		removeHeader(SipHeaders.From);
+		removeHeader(BaseSipHeaders.From);
 	}
 
 	/** Whether Message has ToHeader */
 	public boolean hasToHeader() {
-		return hasHeader(SipHeaders.To);
+		return hasHeader(BaseSipHeaders.To);
 	}
 
 	/** Gets ToHeader of Message */
 	public ToHeader getToHeader() {
-		Header h = getHeader(SipHeaders.To);
+		Header h = getHeader(BaseSipHeaders.To);
 		if (h == null)
 			return null;
 		else
@@ -709,12 +744,12 @@ public abstract class BaseMessage {
 
 	/** Removes ToHeader from Message */
 	public void removeToHeader() {
-		removeHeader(SipHeaders.To);
+		removeHeader(BaseSipHeaders.To);
 	}
 
 	/** Whether Message has ContactHeader */
 	public boolean hasContactHeader() {
-		return hasHeader(SipHeaders.Contact);
+		return hasHeader(BaseSipHeaders.Contact);
 	}
 
 	/**
@@ -744,7 +779,7 @@ public abstract class BaseMessage {
 
 	/** Gets a MultipleHeader of Contacts */
 	public MultipleHeader getContacts() {
-		Vector v = getHeaders(SipHeaders.Contact);
+		Vector v = getHeaders(BaseSipHeaders.Contact);
 		if (v.size() > 0)
 			return new MultipleHeader(v);
 		else
@@ -765,12 +800,12 @@ public abstract class BaseMessage {
 
 	/** Removes ContactHeaders from Message */
 	public void removeContacts() {
-		removeAllHeaders(SipHeaders.Contact);
+		removeAllHeaders(BaseSipHeaders.Contact);
 	}
 
 	/** Whether Message has ViaHeaders */
 	public boolean hasViaHeader() {
-		return hasHeader(SipHeaders.Via);
+		return hasHeader(BaseSipHeaders.Via);
 	}
 
 	/** Adds ViaHeader at the top */
@@ -796,7 +831,7 @@ public abstract class BaseMessage {
 
 	/** Gets all Vias */
 	public MultipleHeader getVias() {
-		Vector v = getHeaders(SipHeaders.Via);
+		Vector v = getHeaders(BaseSipHeaders.Via);
 		if (v.size() > 0)
 			return new MultipleHeader(v);
 		else
@@ -817,22 +852,22 @@ public abstract class BaseMessage {
 
 	/** Removes ViaHeaders from Message (if any exists) */
 	public void removeVias() {
-		removeAllHeaders(SipHeaders.Via);
+		removeAllHeaders(BaseSipHeaders.Via);
 	}
 
 	/** Whether Message has RouteHeader */
 	public boolean hasRouteHeader() {
-		return hasHeader(SipHeaders.Route);
+		return hasHeader(BaseSipHeaders.Route);
 	}
 
 	/** Adds RouteHeader at the top */
 	public void addRouteHeader(RouteHeader h) {
-		addHeaderAfter(h, SipHeaders.Via);
+		addHeaderAfter(h, BaseSipHeaders.Via);
 	}
 
 	/** Adds multiple Route headers at the top */
 	public void addRoutes(MultipleHeader routes) {
-		addHeadersAfter(routes, SipHeaders.Via);
+		addHeadersAfter(routes, BaseSipHeaders.Via);
 	}
 
 	/** Gets the top RouteHeader */
@@ -847,7 +882,7 @@ public abstract class BaseMessage {
 
 	/** Gets the whole route */
 	public MultipleHeader getRoutes() {
-		Vector v = getHeaders(SipHeaders.Route);
+		Vector v = getHeaders(BaseSipHeaders.Route);
 		if (v.size() > 0)
 			return new MultipleHeader(v);
 		else
@@ -863,7 +898,7 @@ public abstract class BaseMessage {
 
 	/** Removes all RouteHeaders from Message (if any exists) */
 	public void removeRoutes() {
-		removeAllHeaders(SipHeaders.Route);
+		removeAllHeaders(BaseSipHeaders.Route);
 	}
 
 	/** Sets the whole route */
@@ -875,17 +910,17 @@ public abstract class BaseMessage {
 
 	/** Whether Message has RecordRouteHeader */
 	public boolean hasRecordRouteHeader() {
-		return hasHeader(SipHeaders.Record_Route);
+		return hasHeader(BaseSipHeaders.Record_Route);
 	}
 
 	/** Adds RecordRouteHeader at the top */
 	public void addRecordRouteHeader(RecordRouteHeader rr) { // addHeaderAfter(rr,SipHeaders.Via);
-		addHeaderAfter(rr, SipHeaders.CSeq);
+		addHeaderAfter(rr, BaseSipHeaders.CSeq);
 	}
 
 	/** Adds multiple RecordRoute headers at the top */
 	public void addRecordRoutes(MultipleHeader routes) { // addHeadersAfter(routes,SipHeaders.Via);
-		addHeadersAfter(routes, SipHeaders.CSeq);
+		addHeadersAfter(routes, BaseSipHeaders.CSeq);
 	}
 
 	/** Gets the top RecordRouteHeader */
@@ -900,7 +935,7 @@ public abstract class BaseMessage {
 
 	/** Gets the whole RecordRoute headers */
 	public MultipleHeader getRecordRoutes() {
-		Vector v = getHeaders(SipHeaders.Record_Route);
+		Vector v = getHeaders(BaseSipHeaders.Record_Route);
 		if (v.size() > 0)
 			return new MultipleHeader(v);
 		else
@@ -916,7 +951,7 @@ public abstract class BaseMessage {
 
 	/** Removes all RecordRouteHeader from Message (if any exists) */
 	public void removeRecordRoutes() {
-		removeAllHeaders(SipHeaders.Record_Route);
+		removeAllHeaders(BaseSipHeaders.Record_Route);
 	}
 
 	/** Sets the whole RecordRoute headers */
@@ -928,12 +963,12 @@ public abstract class BaseMessage {
 
 	/** Whether Message has CSeqHeader */
 	public boolean hasCSeqHeader() {
-		return hasHeader(SipHeaders.CSeq);
+		return hasHeader(BaseSipHeaders.CSeq);
 	}
 
 	/** Gets CSeqHeader of Message */
 	public CSeqHeader getCSeqHeader() {
-		Header h = getHeader(SipHeaders.CSeq);
+		Header h = getHeader(BaseSipHeaders.CSeq);
 		if (h == null)
 			return null;
 		else
@@ -947,12 +982,12 @@ public abstract class BaseMessage {
 
 	/** Removes CSeqHeader from Message */
 	public void removeCSeqHeader() {
-		removeHeader(SipHeaders.CSeq);
+		removeHeader(BaseSipHeaders.CSeq);
 	}
 
 	/** Whether has CallIdHeader */
 	public boolean hasCallIdHeader() {
-		return hasHeader(SipHeaders.Call_ID);
+		return hasHeader(BaseSipHeaders.Call_ID);
 	}
 
 	/** Sets CallIdHeader of Message */
@@ -962,7 +997,7 @@ public abstract class BaseMessage {
 
 	/** Gets CallIdHeader of Message */
 	public CallIdHeader getCallIdHeader() {
-		Header h = getHeader(SipHeaders.Call_ID);
+		Header h = getHeader(BaseSipHeaders.Call_ID);
 		if (h == null)
 			return null;
 		else
@@ -971,12 +1006,12 @@ public abstract class BaseMessage {
 
 	/** Removes CallIdHeader from Message */
 	public void removeCallIdHeader() {
-		removeHeader(SipHeaders.Call_ID);
+		removeHeader(BaseSipHeaders.Call_ID);
 	}
 
 	/** Whether Message has SubjectHeader */
 	public boolean hasSubjectHeader() {
-		return hasHeader(SipHeaders.Subject);
+		return hasHeader(BaseSipHeaders.Subject);
 	}
 
 	/** Sets SubjectHeader of Message */
@@ -986,7 +1021,7 @@ public abstract class BaseMessage {
 
 	/** Gets SubjectHeader of Message */
 	public SubjectHeader getSubjectHeader() {
-		Header h = getHeader(SipHeaders.Subject);
+		Header h = getHeader(BaseSipHeaders.Subject);
 		if (h == null)
 			return null;
 		else
@@ -995,17 +1030,17 @@ public abstract class BaseMessage {
 
 	/** Removes SubjectHeader from Message */
 	public void removeSubjectHeader() {
-		removeHeader(SipHeaders.Subject);
+		removeHeader(BaseSipHeaders.Subject);
 	}
 
 	/** Whether Message has DateHeader */
 	public boolean hasDateHeader() {
-		return hasHeader(SipHeaders.Date);
+		return hasHeader(BaseSipHeaders.Date);
 	}
 
 	/** Gets DateHeader of Message */
 	public DateHeader getDateHeader() {
-		Header h = getHeader(SipHeaders.Date);
+		Header h = getHeader(BaseSipHeaders.Date);
 		if (h == null)
 			return null;
 		else
@@ -1019,12 +1054,12 @@ public abstract class BaseMessage {
 
 	/** Removes DateHeader from Message (if it exists) */
 	public void removeDateHeader() {
-		removeHeader(SipHeaders.Date);
+		removeHeader(BaseSipHeaders.Date);
 	}
 
 	/** Whether has UserAgentHeader */
 	public boolean hasUserAgentHeader() {
-		return hasHeader(SipHeaders.User_Agent);
+		return hasHeader(BaseSipHeaders.User_Agent);
 	}
 
 	/** Sets UserAgentHeader */
@@ -1034,7 +1069,7 @@ public abstract class BaseMessage {
 
 	/** Gets UserAgentHeader */
 	public UserAgentHeader getUserAgentHeader() {
-		Header h = getHeader(SipHeaders.User_Agent);
+		Header h = getHeader(BaseSipHeaders.User_Agent);
 		if (h == null)
 			return null;
 		else
@@ -1043,12 +1078,12 @@ public abstract class BaseMessage {
 
 	/** Removes UserAgentHeader */
 	public void removeUserAgentHeader() {
-		removeHeader(SipHeaders.User_Agent);
+		removeHeader(BaseSipHeaders.User_Agent);
 	}
 
 	/** Whether has ServerHeader */
 	public boolean hasServerHeader() {
-		return hasHeader(SipHeaders.Server);
+		return hasHeader(BaseSipHeaders.Server);
 	}
 
 	/** Sets ServerHeader */
@@ -1058,7 +1093,7 @@ public abstract class BaseMessage {
 
 	/** Gets ServerHeader */
 	public ServerHeader getServerHeader() {
-		Header h = getHeader(SipHeaders.Server);
+		Header h = getHeader(BaseSipHeaders.Server);
 		if (h == null)
 			return null;
 		else
@@ -1067,12 +1102,12 @@ public abstract class BaseMessage {
 
 	/** Removes ServerHeader */
 	public void removeServerHeader() {
-		removeHeader(SipHeaders.Server);
+		removeHeader(BaseSipHeaders.Server);
 	}
 
 	/** Whether has AcceptHeader */
 	public boolean hasAcceptHeader() {
-		return hasHeader(SipHeaders.Accept);
+		return hasHeader(BaseSipHeaders.Accept);
 	}
 
 	/** Sets AcceptHeader */
@@ -1082,7 +1117,7 @@ public abstract class BaseMessage {
 
 	/** Gets AcceptHeader */
 	public AcceptHeader getAcceptHeader() {
-		Header h = getHeader(SipHeaders.Accept);
+		Header h = getHeader(BaseSipHeaders.Accept);
 		if (h == null)
 			return null;
 		else
@@ -1091,12 +1126,12 @@ public abstract class BaseMessage {
 
 	/** Removes AcceptHeader */
 	public void removeAcceptHeader() {
-		removeHeader(SipHeaders.Accept);
+		removeHeader(BaseSipHeaders.Accept);
 	}
 
 	/** Whether has AlertInfoHeader */
 	public boolean hasAlertInfoHeader() {
-		return hasHeader(SipHeaders.Alert_Info);
+		return hasHeader(BaseSipHeaders.Alert_Info);
 	}
 
 	/** Sets AlertInfoHeader */
@@ -1106,7 +1141,7 @@ public abstract class BaseMessage {
 
 	/** Gets AlertInfoHeader */
 	public AlertInfoHeader getAlertInfoHeader() {
-		Header h = getHeader(SipHeaders.Alert_Info);
+		Header h = getHeader(BaseSipHeaders.Alert_Info);
 		if (h == null)
 			return null;
 		else
@@ -1115,12 +1150,12 @@ public abstract class BaseMessage {
 
 	/** Removes AlertInfoHeader */
 	public void removeAlertInfoHeader() {
-		removeHeader(SipHeaders.Alert_Info);
+		removeHeader(BaseSipHeaders.Alert_Info);
 	}
 
 	/** Whether has AllowHeader */
 	public boolean hasAllowHeader() {
-		return hasHeader(SipHeaders.Allow);
+		return hasHeader(BaseSipHeaders.Allow);
 	}
 
 	/** Sets AllowHeader */
@@ -1130,7 +1165,7 @@ public abstract class BaseMessage {
 
 	/** Gets AllowHeader */
 	public AllowHeader getAllowHeader() {
-		Header h = getHeader(SipHeaders.Allow);
+		Header h = getHeader(BaseSipHeaders.Allow);
 		if (h == null)
 			return null;
 		else
@@ -1139,17 +1174,17 @@ public abstract class BaseMessage {
 
 	/** Removes AllowHeader */
 	public void removeAllowHeader() {
-		removeHeader(SipHeaders.Allow);
+		removeHeader(BaseSipHeaders.Allow);
 	}
 
 	/** Whether Message has ExpiresHeader */
 	public boolean hasExpiresHeader() {
-		return hasHeader(SipHeaders.Expires);
+		return hasHeader(BaseSipHeaders.Expires);
 	}
 
 	/** Gets ExpiresHeader of Message */
 	public ExpiresHeader getExpiresHeader() {
-		Header h = getHeader(SipHeaders.Expires);
+		Header h = getHeader(BaseSipHeaders.Expires);
 		if (h == null)
 			return null;
 		else
@@ -1163,17 +1198,17 @@ public abstract class BaseMessage {
 
 	/** Removes ExpiresHeader from Message (if it exists) */
 	public void removeExpiresHeader() {
-		removeHeader(SipHeaders.Expires);
+		removeHeader(BaseSipHeaders.Expires);
 	}
 
 	/** Whether Message has ContentTypeHeader */
 	public boolean hasContentTypeHeader() {
-		return hasHeader(SipHeaders.Content_Type);
+		return hasHeader(BaseSipHeaders.Content_Type);
 	}
 
 	/** Gets ContentTypeHeader of Message */
 	public ContentTypeHeader getContentTypeHeader() {
-		Header h = getHeader(SipHeaders.Content_Type);
+		Header h = getHeader(BaseSipHeaders.Content_Type);
 		if (h == null)
 			return null;
 		else
@@ -1187,17 +1222,17 @@ public abstract class BaseMessage {
 
 	/** Removes ContentTypeHeader from Message (if it exists) */
 	protected void removeContentTypeHeader() {
-		removeHeader(SipHeaders.Content_Type);
+		removeHeader(BaseSipHeaders.Content_Type);
 	}
 
 	/** Whether Message has ContentLengthHeader */
 	public boolean hasContentLengthHeader() {
-		return hasHeader(SipHeaders.Content_Length);
+		return hasHeader(BaseSipHeaders.Content_Length);
 	}
 
 	/** Gets ContentLengthHeader of Message */
 	public ContentLengthHeader getContentLengthHeader() {
-		Header h = getHeader(SipHeaders.Content_Length);
+		Header h = getHeader(BaseSipHeaders.Content_Length);
 		if (h == null)
 			return null;
 		else
@@ -1211,7 +1246,7 @@ public abstract class BaseMessage {
 
 	/** Removes ContentLengthHeader from Message (if it exists) */
 	protected void removeContentLengthHeader() {
-		removeHeader(SipHeaders.Content_Length);
+		removeHeader(BaseSipHeaders.Content_Length);
 	}
 
 	/** Whether Message has Body */
@@ -1282,7 +1317,7 @@ public abstract class BaseMessage {
 
 	/** Whether has AuthenticationInfoHeader */
 	public boolean hasAuthenticationInfoHeader() {
-		return hasHeader(SipHeaders.Authentication_Info);
+		return hasHeader(BaseSipHeaders.Authentication_Info);
 	}
 
 	/** Sets AuthenticationInfoHeader */
@@ -1292,7 +1327,7 @@ public abstract class BaseMessage {
 
 	/** Gets AuthenticationInfoHeader */
 	public AuthenticationInfoHeader getAuthenticationInfoHeader() {
-		Header h = getHeader(SipHeaders.Authentication_Info);
+		Header h = getHeader(BaseSipHeaders.Authentication_Info);
 		if (h == null)
 			return null;
 		else
@@ -1301,12 +1336,12 @@ public abstract class BaseMessage {
 
 	/** Removes AuthenticationInfoHeader */
 	public void removeAuthenticationInfoHeader() {
-		removeHeader(SipHeaders.Authentication_Info);
+		removeHeader(BaseSipHeaders.Authentication_Info);
 	}
 
 	/** Whether has AuthorizationHeader */
 	public boolean hasAuthorizationHeader() {
-		return hasHeader(SipHeaders.Authorization);
+		return hasHeader(BaseSipHeaders.Authorization);
 	}
 
 	/** Sets AuthorizationHeader */
@@ -1316,7 +1351,7 @@ public abstract class BaseMessage {
 
 	/** Gets AuthorizationHeader */
 	public AuthorizationHeader getAuthorizationHeader() {
-		Header h = getHeader(SipHeaders.Authorization);
+		Header h = getHeader(BaseSipHeaders.Authorization);
 		if (h == null)
 			return null;
 		else
@@ -1325,12 +1360,12 @@ public abstract class BaseMessage {
 
 	/** Removes AuthorizationHeader */
 	public void removeAuthorizationHeader() {
-		removeHeader(SipHeaders.Authorization);
+		removeHeader(BaseSipHeaders.Authorization);
 	}
 
 	/** Whether has WwwAuthenticateHeader */
 	public boolean hasWwwAuthenticateHeader() {
-		return hasHeader(SipHeaders.WWW_Authenticate);
+		return hasHeader(BaseSipHeaders.WWW_Authenticate);
 	}
 
 	/** Sets WwwAuthenticateHeader */
@@ -1340,7 +1375,7 @@ public abstract class BaseMessage {
 
 	/** Gets WwwAuthenticateHeader */
 	public WwwAuthenticateHeader getWwwAuthenticateHeader() {
-		Header h = getHeader(SipHeaders.WWW_Authenticate);
+		Header h = getHeader(BaseSipHeaders.WWW_Authenticate);
 		if (h == null)
 			return null;
 		else
@@ -1349,12 +1384,12 @@ public abstract class BaseMessage {
 
 	/** Removes WwwAuthenticateHeader */
 	public void removeWwwAuthenticateHeader() {
-		removeHeader(SipHeaders.WWW_Authenticate);
+		removeHeader(BaseSipHeaders.WWW_Authenticate);
 	}
 
 	/** Whether has ProxyAuthenticateHeader */
 	public boolean hasProxyAuthenticateHeader() {
-		return hasHeader(SipHeaders.Proxy_Authenticate);
+		return hasHeader(BaseSipHeaders.Proxy_Authenticate);
 	}
 
 	/** Sets ProxyAuthenticateHeader */
@@ -1364,7 +1399,7 @@ public abstract class BaseMessage {
 
 	/** Gets ProxyAuthenticateHeader */
 	public ProxyAuthenticateHeader getProxyAuthenticateHeader() {
-		Header h = getHeader(SipHeaders.Proxy_Authenticate);
+		Header h = getHeader(BaseSipHeaders.Proxy_Authenticate);
 		if (h == null)
 			return null;
 		else
@@ -1373,12 +1408,12 @@ public abstract class BaseMessage {
 
 	/** Removes ProxyAuthenticateHeader */
 	public void removeProxyAuthenticateHeader() {
-		removeHeader(SipHeaders.Proxy_Authenticate);
+		removeHeader(BaseSipHeaders.Proxy_Authenticate);
 	}
 
 	/** Whether has ProxyAuthorizationHeader */
 	public boolean hasProxyAuthorizationHeader() {
-		return hasHeader(SipHeaders.Proxy_Authorization);
+		return hasHeader(BaseSipHeaders.Proxy_Authorization);
 	}
 
 	/** Sets ProxyAuthorizationHeader */
@@ -1388,7 +1423,7 @@ public abstract class BaseMessage {
 
 	/** Gets ProxyAuthorizationHeader */
 	public ProxyAuthorizationHeader getProxyAuthorizationHeader() {
-		Header h = getHeader(SipHeaders.Proxy_Authorization);
+		Header h = getHeader(BaseSipHeaders.Proxy_Authorization);
 		if (h == null)
 			return null;
 		else
@@ -1397,7 +1432,7 @@ public abstract class BaseMessage {
 
 	/** Removes ProxyAuthorizationHeader */
 	public void removeProxyAuthorizationHeader() {
-		removeHeader(SipHeaders.Proxy_Authorization);
+		removeHeader(BaseSipHeaders.Proxy_Authorization);
 	}
 
 	// **************************** RFC 2543 Legacy

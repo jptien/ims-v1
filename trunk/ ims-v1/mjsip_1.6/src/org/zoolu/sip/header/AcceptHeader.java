@@ -29,11 +29,11 @@ package org.zoolu.sip.header;
 public class AcceptHeader extends ParametricHeader
 {
    public AcceptHeader()
-   {  super(SipHeaders.Accept,"application/sdp");
+   {  super(BaseSipHeaders.Accept,"application/sdp");
    }
 
    public AcceptHeader(String hvalue)
-   {  super(SipHeaders.Accept,hvalue);
+   {  super(BaseSipHeaders.Accept,hvalue);
    }
 
    public AcceptHeader(Header hd)

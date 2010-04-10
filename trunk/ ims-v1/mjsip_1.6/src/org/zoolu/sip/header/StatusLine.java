@@ -39,12 +39,14 @@ public class StatusLine
    }
 
    /** Create a new copy of the request-line*/
-   public Object clone()
+   @Override
+public Object clone()
    {  return new StatusLine(getCode(),getReason());
    }
 
    /** Indicates whether some other Object is "equal to" this StatusLine */
-   public boolean equals(Object obj)
+   @Override
+public boolean equals(Object obj)
    {  //if (o.getClass().getSuperclass()!=this.getClass().getSuperclass()) return false;
       try
       {  StatusLine r=(StatusLine)obj;
@@ -54,7 +56,8 @@ public class StatusLine
       catch (Exception e) {  return false;  }
    }
 
-   public String toString()
+   @Override
+public String toString()
    {  return "SIP/2.0 "+code+" "+reason+"\r\n";
    }
 

@@ -24,9 +24,6 @@
 package org.zoolu.sip.header;
 
 
-import org.zoolu.tools.Parser;
-
-
 /** SIP Header Subject.
   */
 public class SubjectHeader extends Header
@@ -38,7 +35,7 @@ public class SubjectHeader extends Header
 
    /** Creates a SubjectHeader with value <i>hvalue</i> */
    public SubjectHeader(String hvalue)
-   {  super(SipHeaders.Subject,hvalue);
+   {  super(BaseSipHeaders.Subject,hvalue);
    }
 
    /** Creates a new SubjectHeader equal to SubjectHeader <i>hd</i> */

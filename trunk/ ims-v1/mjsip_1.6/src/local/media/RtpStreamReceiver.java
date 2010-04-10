@@ -22,12 +22,11 @@
 package local.media;
 
 
+import java.io.OutputStream;
+import java.net.DatagramSocket;
+
 import local.net.RtpPacket;
 import local.net.RtpSocket;
-
-import java.io.*;
-import java.net.InetAddress;
-import java.net.DatagramSocket;
 
 
 /** RtpStreamReceiver is a generic stream receiver.
@@ -96,7 +95,8 @@ public class RtpStreamReceiver extends Thread
    }
 
    /** Runs it in a new Thread. */
-   public void run()
+   @Override
+public void run()
    {
       if (rtp_socket==null)
       {  if (DEBUG) println("ERROR: RTP socket is null");

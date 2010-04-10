@@ -22,10 +22,10 @@
 package local.net;
 
 
-import org.zoolu.tools.LogLevel;
-
-import java.net.*;
 import java.io.InterruptedIOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 
 /** UdpRelay implements a direct UDP datagram relay agent. 
@@ -132,7 +132,8 @@ public class UdpRelay extends Thread
    }
        
    /** Redirect packets received from remote source addr/port to destination addr/port  */
-   public void run()
+   @Override
+public void run()
    {  //System.out.println("DEBUG: starting UdpRelay "+toString()+" (it expires after "+alive_to+" sec)");     
       try   
       {  DatagramSocket socket=new DatagramSocket(local_port);
@@ -185,7 +186,8 @@ public class UdpRelay extends Thread
    
       
    /** Gets a String representation of the Object */
-   public String toString()
+   @Override
+public String toString()
    {  return Integer.toString(local_port)+"-->"+dest_addr+":"+dest_port;
    }
 

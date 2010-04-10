@@ -67,12 +67,14 @@ public class NameAddress
    }
    
    /** Creates and returns a copy of NameAddress */
-   public Object clone()
+   @Override
+public Object clone()
    {  return new NameAddress(this);
    }
 
    /** Indicates whether some other Object is "equal to" this NameAddress */
-   public boolean equals(Object obj)
+   @Override
+public boolean equals(Object obj)
    {  NameAddress naddr=(NameAddress)obj;
       return url.equals(naddr.getAddress());
    }
@@ -113,7 +115,8 @@ public class NameAddress
    }
 
    /** Gets string representation of NameAddress */
-   public String toString()
+   @Override
+public String toString()
    {  String str;
       if (hasDisplayName())
          str="\""+name+"\" <"+url+">";

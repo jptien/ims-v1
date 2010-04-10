@@ -82,12 +82,14 @@ public class SocketAddress
    }
 
    /** Makes a copy. */
-   public Object clone()
+   @Override
+public Object clone()
    {  return new SocketAddress(this);
    }
 
    /** Wthether it is equal to Object <i>obj</i>. */
-   public boolean equals(Object obj)
+   @Override
+public boolean equals(Object obj)
    {  try
       {  SocketAddress saddr=(SocketAddress)obj;
          if (port!=saddr.port) return false;
@@ -98,7 +100,8 @@ public class SocketAddress
    }
 
    /** Gets a String representation of the Object. */
-   public String toString()
+   @Override
+public String toString()
    {  return (ipaddr.toString()+":"+port);
    }
 

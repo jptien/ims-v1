@@ -22,9 +22,10 @@
 package local.media;
 
 
-import java.io.*;
-import java.util.Hashtable;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.Hashtable;
 
 
 /** SplitterLine is a simple splitter with one input line (the SplitterLine itself)
@@ -69,7 +70,8 @@ public class SplitterLine extends OutputStream
 
 
    /** Closes this output stream and releases any system resources associated with this stream. */
-   public void close() throws IOException
+   @Override
+public void close() throws IOException
    {  for (Enumeration e=output_lines.elements(); e.hasMoreElements(); )
       {  ((OutputStream)e.nextElement()).close();
       }
@@ -77,28 +79,32 @@ public class SplitterLine extends OutputStream
    }
    
    /** Flushes this output stream and forces any buffered output bytes to be written out. */
-   public void flush() throws IOException
+   @Override
+public void flush() throws IOException
    {  for (Enumeration e=output_lines.elements(); e.hasMoreElements(); )
       {  ((OutputStream)e.nextElement()).flush();
       }
    }
    
    /** Writes b.length bytes from the specified byte array to this output stream. */
-   public void write(byte[] b) throws IOException
+   @Override
+public void write(byte[] b) throws IOException
    {  //System.err.print("*");
       super.write(b);
       //System.err.print("@");
    }
    
    /** Writes len bytes from the specified byte array starting at offset off to this output stream. */
-   public void write(byte[] b, int off, int len) throws IOException
+   @Override
+public void write(byte[] b, int off, int len) throws IOException
    {  //System.err.print("*");
       super.write(b,off,len);
       //System.err.print("@");
    }
    
    /** Writes the specified byte to this output stream. */
-   public void write(int b) throws IOException
+   @Override
+public void write(int b) throws IOException
    {  /*for (Enumeration e=output_lines.elements(); e.hasMoreElements(); )
       {  ((OutputStream)e.nextElement()).write(b);
       }*/

@@ -23,17 +23,14 @@
 
 package org.zoolu.sip.call;
 
-import org.zoolu.sip.call.*;
-import org.zoolu.sip.provider.*;
-import org.zoolu.sip.message.*; //import org.zoolu.sip.dialog.*;
-import org.zoolu.sip.header.StatusLine;
 import org.zoolu.sip.address.NameAddress;
 import org.zoolu.sip.dialog.ExtendedInviteDialog;
 import org.zoolu.sip.dialog.ExtendedInviteDialogListener;
-import org.zoolu.tools.Log;
+import org.zoolu.sip.header.StatusLine;
+import org.zoolu.sip.message.Message;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
 import org.zoolu.tools.LogLevel;
-import org.zoolu.sdp.*;
-import java.util.Vector;
 
 /**
  * Class ExtendedCall extends basic SIP calls.
@@ -98,6 +95,7 @@ public class ExtendedCall extends Call implements ExtendedInviteDialogListener {
 	}
 
 	/** Waits for an incoming call */
+	@Override
 	public void listen() {
 		if (username != null)
 			dialog = new ExtendedInviteDialog(sip_provider, username, realm,
@@ -108,6 +106,7 @@ public class ExtendedCall extends Call implements ExtendedInviteDialogListener {
 	}
 
 	/** Starts a new call, inviting a remote user (<i>r_user</i>) */
+	@Override
 	public void call(String r_user, String from, String contact, String sdp) {
 		printLog("calling " + r_user, LogLevel.MEDIUM);
 		if (username != null)
@@ -128,6 +127,7 @@ public class ExtendedCall extends Call implements ExtendedInviteDialogListener {
 	}
 
 	/** Starts a new call with the <i>invite</i> message request */
+	@Override
 	public void call(Message invite) {
 		dialog = new ExtendedInviteDialog(sip_provider, this);
 		local_sdp = invite.getBody();
@@ -237,6 +237,7 @@ public class ExtendedCall extends Call implements ExtendedInviteDialogListener {
 	// **************************** Logs ****************************/
 
 	/** Adds a new string to the default Log */
+	@Override
 	protected void printLog(String str, int level) {
 		if (log != null)
 			log

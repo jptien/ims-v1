@@ -32,7 +32,7 @@ public class AuthorizationHeader extends AuthenticationHeader
 {
    /** Creates a new AuthorizationHeader */
    public AuthorizationHeader(String hvalue)
-   {  super(SipHeaders.Authorization,hvalue);
+   {  super(BaseSipHeaders.Authorization,hvalue);
    }
 
    /** Creates a new AuthorizationHeader */
@@ -44,6 +44,6 @@ public class AuthorizationHeader extends AuthenticationHeader
      * specifing the <i>auth_scheme</i> and the vector of authentication parameters.
      * <p> <i>auth_param</i> is a vector of String of the form <i>parm_name</i> "=" <i>parm_value</i> */
    public AuthorizationHeader(String auth_scheme, Vector auth_params)
-   {  super(SipHeaders.Authorization,auth_scheme,auth_params);
+   {  super(BaseSipHeaders.Authorization,auth_scheme,auth_params);
    }
 }
