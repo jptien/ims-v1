@@ -3,10 +3,10 @@ package local.ua;
 
 import local.media.JMediaSender;
 import local.media.JVisualReceiver;
+
 import org.zoolu.sip.provider.SipStack;
 import org.zoolu.tools.Log;
 import org.zoolu.tools.LogLevel;
-//import org.zoolu.tools.Parser;
 
 //import java.util.Iterator;
 //import java.util.Vector;

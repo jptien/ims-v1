@@ -24,9 +24,6 @@
 package org.zoolu.sdp;
 
 
-import org.zoolu.tools.Parser;
-
-
 /** SDP session name field.
   * <p>
   * <BLOCKQUOTE><PRE>

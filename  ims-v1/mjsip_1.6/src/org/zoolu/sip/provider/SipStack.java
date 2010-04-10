@@ -25,12 +25,8 @@ package org.zoolu.sip.provider;
 
 import org.zoolu.tools.Configure;
 import org.zoolu.tools.Parser;
-import org.zoolu.tools.Log;
 import org.zoolu.tools.RotatingLog;
 import org.zoolu.tools.Timer;
-
-import java.io.*;
-import java.util.Vector;
 
 /**
  * SipStack includes all static attributes used by the sip stack.
@@ -175,6 +171,7 @@ public class SipStack extends Configure {
 	// ************************** costructor **************************
 
 	/** Parses a single text line (read from the config file) */
+	@Override
 	protected void parseLine(String line) {
 		String attribute;
 		Parser par;
@@ -284,6 +281,7 @@ public class SipStack extends Configure {
 	}
 
 	/** Converts the entire object into lines (to be saved into the config file) */
+	@Override
 	protected String toLines() { // currently not implemented..
 		return "SipStack/" + release;
 	}

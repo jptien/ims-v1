@@ -24,9 +24,10 @@
 package org.zoolu.sip.address;
 
 
+import java.util.Vector;
+
 import org.zoolu.sip.provider.SipParser;
 import org.zoolu.tools.Parser;
-import java.util.Vector;
 
 
 /**
@@ -75,12 +76,14 @@ public class SipURL
    }
 
    /** Creates and returns a copy of the URL */
-   public Object clone()
+   @Override
+public Object clone()
    {  return new SipURL(url);
    }
 
    /** Indicates whether some other Object is "equal to" this URL */
-   public boolean equals(Object obj)
+   @Override
+public boolean equals(Object obj)
    {  SipURL newurl=(SipURL)obj;
       return url.toString().equals(newurl.toString());
    }
@@ -138,7 +141,8 @@ public class SipURL
 
 
    /** Gets string representation of URL */
-   public String toString()
+   @Override
+public String toString()
    {  return url;
    }
 

@@ -24,7 +24,8 @@
 package org.zoolu.sip.header;
 
 
-import org.zoolu.sip.address.*;
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.address.SipURL;
 
 
 /** SIP Header From.
@@ -40,19 +41,19 @@ public class FromHeader extends EndPointHeader
    //}
 
    public FromHeader(NameAddress nameaddr)
-   {  super(SipHeaders.From,nameaddr);
+   {  super(BaseSipHeaders.From,nameaddr);
    }
 
    public FromHeader(SipURL url)
-   {  super(SipHeaders.From,url);
+   {  super(BaseSipHeaders.From,url);
    }
 
    public FromHeader(NameAddress nameaddr, String tag)
-   {  super(SipHeaders.From,nameaddr,tag);
+   {  super(BaseSipHeaders.From,nameaddr,tag);
    }
 
    public FromHeader(SipURL url, String tag)
-   {  super(SipHeaders.From,url,tag);
+   {  super(BaseSipHeaders.From,url,tag);
    }
 
    public FromHeader(Header hd)

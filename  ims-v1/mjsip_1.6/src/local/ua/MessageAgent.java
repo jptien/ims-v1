@@ -22,15 +22,22 @@
 package local.ua;
 
 
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.provider.*;
-import org.zoolu.sip.transaction.*;
-import org.zoolu.sip.header.StatusLine;
-import org.zoolu.sip.message.*;
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.message.BaseMessageFactory;
+import org.zoolu.sip.message.Message;
+import org.zoolu.sip.message.MessageFactory;
+import org.zoolu.sip.message.SipMethods;
+import org.zoolu.sip.message.SipResponses;
+import org.zoolu.sip.provider.MethodIdentifier;
+import org.zoolu.sip.provider.SipInterface;
+import org.zoolu.sip.provider.SipInterfaceListener;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
+import org.zoolu.sip.transaction.TransactionClient;
+import org.zoolu.sip.transaction.TransactionClientListener;
+import org.zoolu.sip.transaction.TransactionServer;
 import org.zoolu.tools.Log;
 import org.zoolu.tools.LogLevel;
-
-import java.io.*;
 
 
 /** Simple Message Agent (MA).
@@ -119,7 +126,7 @@ public class MessageAgent implements SipInterfaceListener, TransactionClientList
    public void onReceivedMessage(SipInterface sip, Message msg)
    {  //printLog("Message received: "+msg.getFirstLine().substring(0,msg.toString().indexOf('\r')));
       if (msg.isRequest())
-      {  (new TransactionServer(sip_provider,msg,null)).respondWith(MessageFactory.createResponse(msg,200,SipResponses.reasonOf(200),null));
+      {  (new TransactionServer(sip_provider,msg,null)).respondWith(BaseMessageFactory.createResponse(msg,200,SipResponses.reasonOf(200),null));
          NameAddress sender=msg.getFromHeader().getNameAddress();
          NameAddress recipient=msg.getToHeader().getNameAddress();
          String subject=null;

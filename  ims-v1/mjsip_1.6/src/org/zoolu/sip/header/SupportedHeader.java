@@ -30,7 +30,7 @@ package org.zoolu.sip.header;
 public class SupportedHeader extends OptionHeader
 {
    public SupportedHeader(String option)
-   {  super(SipHeaders.Supported,option);
+   {  super(BaseSipHeaders.Supported,option);
    }
 
    public SupportedHeader(Header hd)

@@ -25,7 +25,6 @@ package org.zoolu.sip.header;
 
 
 import org.zoolu.tools.Parser;
-//import org.zoolu.sip.provider.SipStack;
 
 
 /** SIP Header Max-Forwards
@@ -46,11 +45,11 @@ public class MaxForwardsHeader extends Header
 
    /** Creates a MaxForwardsHeader with value=<i>n</i> */
    public MaxForwardsHeader(int n)
-   {  super(SipHeaders.Max_Forwards,String.valueOf(n));
+   {  super(BaseSipHeaders.Max_Forwards,String.valueOf(n));
    }
 
    public MaxForwardsHeader(String hvalue)
-   {  super(SipHeaders.Max_Forwards,hvalue);
+   {  super(BaseSipHeaders.Max_Forwards,hvalue);
    }
 
    public MaxForwardsHeader(Header hd)

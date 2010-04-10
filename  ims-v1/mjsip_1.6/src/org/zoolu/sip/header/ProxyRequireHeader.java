@@ -30,7 +30,7 @@ package org.zoolu.sip.header;
 public class ProxyRequireHeader extends OptionHeader
 {
    public ProxyRequireHeader(String option)
-   {  super(SipHeaders.Proxy_Require,option);
+   {  super(BaseSipHeaders.Proxy_Require,option);
    }
 
    public ProxyRequireHeader(Header hd)

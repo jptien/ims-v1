@@ -153,6 +153,7 @@ public class GraphicalUA extends JFrame implements UserAgentListener, RegisterAg
 
 		this.setTitle(user_profile.contact_url);
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				this_windowClosing(e);
 			}
@@ -178,6 +179,7 @@ public class GraphicalUA extends JFrame implements UserAgentListener, RegisterAg
 			}
 		});
 		CallButton.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
 			public void keyTyped(KeyEvent e) {
 				CallButton_actionPerformed();
 			}
@@ -192,6 +194,7 @@ public class GraphicalUA extends JFrame implements UserAgentListener, RegisterAg
 			}
 		});
 		HangupButton.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
 			public void keyTyped(KeyEvent e) {
 				HangupButton_actionPerformed();
 			}

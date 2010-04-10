@@ -61,13 +61,15 @@ public class SdpField
   
    /** Creates and returns a copy of the SdpField.
      * @return a SdpField clone */
-   public Object clone()
+   @Override
+public Object clone()
    {  return new SdpField(this);
    }
 
    /** Whether the SdpField is equal to Object <i>obj</i>
      * @return true if equal */
-   public boolean equals(Object obj)
+   @Override
+public boolean equals(Object obj)
    {  try
       {  SdpField sf=(SdpField)obj;
          if (type!=sf.type) return false;
@@ -91,7 +93,8 @@ public class SdpField
    
    /** Gets string representation of the SdpField
      * @return the string representation */
-   public String toString()
+   @Override
+public String toString()
    {  return type+"="+value+"\r\n";
    }
 

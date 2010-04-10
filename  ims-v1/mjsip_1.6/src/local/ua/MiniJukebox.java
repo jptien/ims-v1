@@ -22,12 +22,12 @@
 package local.ua;
 
 
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.provider.SipStack;
+import java.io.File;
+
+import org.zoolu.sip.address.NameAddress;
 import org.zoolu.sip.provider.SipProvider;
-import org.zoolu.tools.Log;
+import org.zoolu.sip.provider.SipStack;
 import org.zoolu.tools.LogLevel;
-import java.io.*;
 
 
 /** MiniJukebox is a simple audio server that automatically responds to all incoming calls
@@ -48,7 +48,8 @@ public class MiniJukebox extends CommandLineUA
    // ******************* UserAgent callback functions *******************
 
    /** When a new call is incoming */
-   public void onUaCallIncoming(UserAgent ua, NameAddress callee, NameAddress caller)
+   @Override
+public void onUaCallIncoming(UserAgent ua, NameAddress callee, NameAddress caller)
    {  printOut("incoming call from "+caller.toString());
       String audio_file=callee.getAddress().getParameter(PARAM_RESOURCE);
       if (audio_file!=null)
@@ -161,17 +162,20 @@ public class MiniJukebox extends CommandLineUA
    // ****************************** Logs *****************************
 
    /** Adds a new string to the default Log */
-   void printLog(String str)
+   @Override
+void printLog(String str)
    {  printLog(str,LogLevel.HIGH);
    }
 
    /** Adds a new string to the default Log */
-   void printLog(String str, int level)
+   @Override
+void printLog(String str, int level)
    {  if (log!=null) log.println("Jukebox: "+str,level+SipStack.LOG_LEVEL_UA);  
    }
 
    /** Adds the Exception message to the default Log */
-   void printException(Exception e,int level)
+   @Override
+void printException(Exception e,int level)
    {  if (log!=null) log.printException(e,level+SipStack.LOG_LEVEL_UA);
    }
 

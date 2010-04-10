@@ -24,9 +24,6 @@
 package org.zoolu.sip.provider;
 
 
-import org.zoolu.sip.message.Message;
-
-
 /** SipPromisqueInterface is the SipInterface for capturing
   * all SIP messages in PROMISQUE mode.
   * All incoming messages are passed to the listener associated to the SipPromisqueInterface

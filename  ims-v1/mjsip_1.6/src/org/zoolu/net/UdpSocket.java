@@ -24,9 +24,8 @@
 package org.zoolu.net;
 
 
-import java.net.DatagramSocket;
 import java.net.DatagramPacket;
-import java.net.InetAddress;
+import java.net.DatagramSocket;
 
 
 /** UdpSocket provides a uniform interface to UDP transport protocol,
@@ -96,7 +95,8 @@ public class UdpSocket
    }
    
    /** Converts this object to a String. */
-   public String toString()
+   @Override
+public String toString()
    {  return socket.toString();
    }
 

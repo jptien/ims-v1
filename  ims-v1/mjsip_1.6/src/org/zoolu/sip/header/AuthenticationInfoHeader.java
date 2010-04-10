@@ -24,8 +24,9 @@
 package org.zoolu.sip.header;
 
 
-import org.zoolu.sip.provider.SipParser;
 import java.util.Vector;
+
+import org.zoolu.sip.provider.SipParser;
 
 
 /** SIP AuthenticationInfo header */
@@ -33,12 +34,12 @@ public class AuthenticationInfoHeader extends AuthenticationHeader
 {
    /** Creates a new AuthenticationInfoHeader */
    public AuthenticationInfoHeader()
-   {  super(SipHeaders.Authentication_Info,"");
+   {  super(BaseSipHeaders.Authentication_Info,"");
    }
 
    /** Creates a new AuthenticationInfoHeader */
    public AuthenticationInfoHeader(String hvalue)
-   {  super(SipHeaders.Authentication_Info,hvalue);
+   {  super(BaseSipHeaders.Authentication_Info,hvalue);
    }
 
    /** Creates a new AuthenticationInfoHeader */
@@ -50,11 +51,12 @@ public class AuthenticationInfoHeader extends AuthenticationHeader
      * specifing the <i>auth_scheme</i> and the vector of authentication parameters.
      * <p> <i>auth_param</i> is a vector of String of the form <i>parm_name</i> "=" <i>parm_value</i> */
    public AuthenticationInfoHeader(Vector auth_params)
-   {  super(SipHeaders.Authentication_Info,"",auth_params);
+   {  super(BaseSipHeaders.Authentication_Info,"",auth_params);
    }
    
    /** Whether has parameter <i>param_name</i> */
-   public boolean hasParameter(String param_name)
+   @Override
+public boolean hasParameter(String param_name)
    {  char[] name_separators={'=',  ' ', '\t', '\r', '\n'};
       SipParser par=new SipParser(value);
       //par.skipString(); // skip the auth_scheme
@@ -68,7 +70,8 @@ public class AuthenticationInfoHeader extends AuthenticationHeader
    }
  
    /** Returns the parameter <i>param_name</i>, in case removing quotes. */
-   public String getParameter(String param_name)
+   @Override
+public String getParameter(String param_name)
    {  char[] name_separators={'=', ' ', '\t'};
       SipParser par=new SipParser(value);
       //par.skipString(); // skip the auth_scheme
@@ -89,7 +92,8 @@ public class AuthenticationInfoHeader extends AuthenticationHeader
    
    /** Gets a String Vector of parameter names.
      * @returns a Vector of String. */
-   public Vector getParameters()
+   @Override
+public Vector getParameters()
    {  char[] name_separators={'=', ' ', '\t'};
       SipParser par=new SipParser(value);
       //par.skipString(); // skip the auth_scheme
@@ -104,7 +108,8 @@ public class AuthenticationInfoHeader extends AuthenticationHeader
    }
 
    /** Gets the athentication scheme. Note that for AuthenticationInfoHeader it always return null. */
-   public String getAuthScheme()
+   @Override
+public String getAuthScheme()
    {  return null;
    }
 }

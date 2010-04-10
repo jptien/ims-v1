@@ -22,12 +22,12 @@
 package local.media;
 
 
+import java.io.InputStream;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+
 import local.net.RtpPacket;
 import local.net.RtpSocket;
-
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.DatagramSocket;
 
 
 /** RtpStreamSender is a generic stream sender.
@@ -155,7 +155,8 @@ public class RtpStreamSender extends Thread
    }
 
    /** Runs it in a new Thread. */
-   public void run()
+   @Override
+public void run()
    {
       if (rtp_socket==null || input_stream==null) return;
       //else

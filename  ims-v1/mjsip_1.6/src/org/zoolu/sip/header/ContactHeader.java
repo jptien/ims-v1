@@ -24,13 +24,13 @@
 package org.zoolu.sip.header;
 
 
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.provider.SipParser;
-import org.zoolu.tools.Parser;
-import org.zoolu.tools.DateFormat;
 import java.util.Date;
-//import java.text.DateFormat;
-//import java.text.SimpleDateFormat;
+
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.address.SipURL;
+import org.zoolu.sip.provider.SipParser;
+import org.zoolu.tools.DateFormat;
+import org.zoolu.tools.Parser;
 
 
 /** SIP Header Contact.
@@ -47,16 +47,16 @@ public class ContactHeader extends EndPointHeader
 {
    /** Creates a ContactHeader with '*' as contact value */
    public ContactHeader()
-   {  super(new Header(SipHeaders.Contact,null));
+   {  super(new Header(BaseSipHeaders.Contact,null));
       value="*";
    }
 
    public ContactHeader(NameAddress nameaddr)
-   {  super(SipHeaders.Contact,nameaddr);
+   {  super(BaseSipHeaders.Contact,nameaddr);
    }
 
    public ContactHeader(SipURL url)
-   {  super(SipHeaders.Contact,url);
+   {  super(BaseSipHeaders.Contact,url);
    }
 
    public ContactHeader(Header hd)

@@ -24,7 +24,7 @@
 package org.zoolu.sip.header;
 
 
-import org.zoolu.sip.address.*;
+import org.zoolu.sip.address.SipURL;
 
 
 /** SIP Request-line, i.e. the first line of a request message
@@ -48,12 +48,14 @@ public class RequestLine
    }
 
    /** Create a new copy of the RequestLine*/
-   public Object clone()
+   @Override
+public Object clone()
    {  return new RequestLine(getMethod(),getAddress());
    }
 
    /** Indicates whether some other Object is "equal to" this RequestLine */
-   public boolean equals(Object obj)
+   @Override
+public boolean equals(Object obj)
    {  //if (o.getClass().getSuperclass()!=this.getClass().getSuperclass()) return false;
       try
       {  RequestLine r=(RequestLine)obj; 
@@ -63,7 +65,8 @@ public class RequestLine
       catch (Exception e) {  return false;  }
    }
 
-   public String toString()
+   @Override
+public String toString()
    {  return method+" "+url+" SIP/2.0\r\n";
    }
 

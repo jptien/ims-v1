@@ -243,7 +243,7 @@ public class RtpPacket
 
    /** Gets int value */
    private static int getInt(byte b)
-   {  return ((int)b+256)%256;
+   {  return (b+256)%256;
    }
 
    /** Gets long value */

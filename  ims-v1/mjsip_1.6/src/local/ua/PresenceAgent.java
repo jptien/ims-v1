@@ -22,15 +22,16 @@
 package local.ua;
 
 
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.provider.*;
-import org.zoolu.sip.dialog.*;
-import org.zoolu.sip.header.StatusLine;
-import org.zoolu.sip.message.*;
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.dialog.NotifierDialog;
+import org.zoolu.sip.dialog.NotifierDialogListener;
+import org.zoolu.sip.dialog.SubscriberDialog;
+import org.zoolu.sip.dialog.SubscriberDialogListener;
+import org.zoolu.sip.message.Message;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
 import org.zoolu.tools.Log;
 import org.zoolu.tools.LogLevel;
-
-import java.io.*;
 
 
 /** Simple Presence Agent (PA).

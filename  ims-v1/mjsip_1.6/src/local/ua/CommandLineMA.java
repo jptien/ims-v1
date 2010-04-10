@@ -22,12 +22,14 @@
 package local.ua;
 
 
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.provider.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
 import org.zoolu.tools.Log;
 import org.zoolu.tools.LogLevel;
-
-import java.io.*;
 
 
 /** Simple command-line short-message UA.

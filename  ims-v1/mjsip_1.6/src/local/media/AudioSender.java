@@ -1,12 +1,13 @@
 package local.media;
 
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioFileFormat;
 import java.io.File;
 import java.io.FileInputStream;
+
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 
 /** AudioSender is a pure-java audio stream sender.

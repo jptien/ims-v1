@@ -22,20 +22,29 @@
 package local.ua;
 
 
+import java.util.Vector;
+
 import local.net.KeepAliveSip;
+
 import org.zoolu.net.SocketAddress;
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.provider.SipStack;
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.address.SipURL;
+import org.zoolu.sip.authentication.DigestAuthentication;
+import org.zoolu.sip.header.AuthorizationHeader;
+import org.zoolu.sip.header.ContactHeader;
+import org.zoolu.sip.header.ExpiresHeader;
+import org.zoolu.sip.header.Header;
+import org.zoolu.sip.header.StatusLine;
+import org.zoolu.sip.header.WwwAuthenticateHeader;
+import org.zoolu.sip.message.BaseMessageFactory;
+import org.zoolu.sip.message.BaseSipMethods;
+import org.zoolu.sip.message.Message;
 import org.zoolu.sip.provider.SipProvider;
-import org.zoolu.sip.header.*;
-import org.zoolu.sip.message.*;
+import org.zoolu.sip.provider.SipStack;
 import org.zoolu.sip.transaction.TransactionClient;
 import org.zoolu.sip.transaction.TransactionClientListener;
-import org.zoolu.sip.authentication.DigestAuthentication;
 import org.zoolu.tools.Log;
 import org.zoolu.tools.LogLevel;
-
-import java.util.Vector;
 
 
 /** Register User Agent.
@@ -147,7 +156,7 @@ public class RegisterAgent implements Runnable, TransactionClientListener
    public void register(int expire_time)
    {  attempts=0;
       if (expire_time>0) this.expire_time=expire_time;
-      Message req=MessageFactory.createRegisterRequest(sip_provider,target,target,contact);
+      Message req=BaseMessageFactory.createRegisterRequest(sip_provider,target,target,contact);
       req.setExpiresHeader(new ExpiresHeader(String.valueOf(expire_time)));
       if (next_nonce!=null)
       {  AuthorizationHeader ah=new AuthorizationHeader("Digest");
@@ -157,7 +166,7 @@ public class RegisterAgent implements Runnable, TransactionClientListener
          ah.addNonceParam(next_nonce);
          ah.addUriParam(req.getRequestLine().getAddress().toString());
          ah.addQopParam(qop);
-         String response=(new DigestAuthentication(SipMethods.REGISTER,ah,null,passwd)).getResponse();
+         String response=(new DigestAuthentication(BaseSipMethods.REGISTER,ah,null,passwd)).getResponse();
          ah.addResponseParam(response);
          req.setAuthorizationHeader(ah);
       }
@@ -178,7 +187,7 @@ public class RegisterAgent implements Runnable, TransactionClientListener
    public void unregisterall()
    {  attempts=0;
       NameAddress user=new NameAddress(target);
-      Message req=MessageFactory.createRegisterRequest(sip_provider,target,target,null);
+      Message req=BaseMessageFactory.createRegisterRequest(sip_provider,target,target,null);
       //ContactHeader contact_star=new ContactHeader(); // contact is *
       //req.setContactHeader(contact_star);
       req.setExpiresHeader(new ExpiresHeader(String.valueOf(0)));
@@ -251,7 +260,7 @@ public class RegisterAgent implements Runnable, TransactionClientListener
 
    /** Callback function called when client sends back a success response. */
    public void onTransSuccessResponse(TransactionClient transaction, Message resp)
-   {  if (transaction.getTransactionMethod().equals(SipMethods.REGISTER))
+   {  if (transaction.getTransactionMethod().equals(BaseSipMethods.REGISTER))
       {  if (resp.hasAuthenticationInfoHeader())
          {  next_nonce=resp.getAuthenticationInfoHeader().getNextnonceParam();
          }
@@ -280,7 +289,7 @@ public class RegisterAgent implements Runnable, TransactionClientListener
 
    /** Callback function called when client sends back a failure response. */
    public void onTransFailureResponse(TransactionClient transaction, Message resp)
-   {  if (transaction.getTransactionMethod().equals(SipMethods.REGISTER))
+   {  if (transaction.getTransactionMethod().equals(BaseSipMethods.REGISTER))
       {  StatusLine status=resp.getStatusLine();
          int code=status.getCode();
          if (code==401 && attempts<MAX_ATTEMPTS && resp.hasWwwAuthenticateHeader() && resp.getWwwAuthenticateHeader().getRealmParam().equalsIgnoreCase(realm))
@@ -291,7 +300,7 @@ public class RegisterAgent implements Runnable, TransactionClientListener
             String qop_options=wah.getQopOptionsParam();
             //printLog("DEBUG: qop-options: "+qop_options,LogLevel.MEDIUM);
             qop=(qop_options!=null)? "auth" : null;
-            AuthorizationHeader ah=(new DigestAuthentication(SipMethods.REGISTER,req.getRequestLine().getAddress().toString(),wah,qop,null,username,passwd)).getAuthorizationHeader();
+            AuthorizationHeader ah=(new DigestAuthentication(BaseSipMethods.REGISTER,req.getRequestLine().getAddress().toString(),wah,qop,null,username,passwd)).getAuthorizationHeader();
             req.setAuthorizationHeader(ah);
             TransactionClient t=new TransactionClient(sip_provider,req,this);
             t.request();
@@ -306,7 +315,7 @@ public class RegisterAgent implements Runnable, TransactionClientListener
 
    /** Callback function called when client expires timeout. */
    public void onTransTimeout(TransactionClient transaction)
-   {  if (transaction.getTransactionMethod().equals(SipMethods.REGISTER))
+   {  if (transaction.getTransactionMethod().equals(BaseSipMethods.REGISTER))
       {  printLog("Registration failure: No response from server.",LogLevel.HIGH);
          if (listener!=null) listener.onUaRegistrationFailure(this,target,contact,"Timeout");
       }

@@ -24,10 +24,11 @@
 package org.zoolu.tools;
 
 
-import java.io.*;
-import java.util.Date;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Calendar;
-//import java.util.GregorianCalendar;
 
 
 /** Class RotatingLog extends Log with log file rotation. 
@@ -93,7 +94,8 @@ public class RotatingLog extends Log
    }  
    
    /** Prints the <i>log</i> if <i>level</i> isn't greater than the Log <i>verbose_level</i> */
-   public Log print(String message, int level)
+   @Override
+public Log print(String message, int level)
    {  //long now=GregorianCalendar.getInstance().getTime().getTime();
       long now=Calendar.getInstance().getTime().getTime();
       if (now>next_rotation)

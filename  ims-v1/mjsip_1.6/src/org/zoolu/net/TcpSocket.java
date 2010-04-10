@@ -24,10 +24,9 @@
 package org.zoolu.net;
 
 
-import java.net.Socket;
-//import java.net.InetAddress;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 
 
 /** TcpSocket provides a uniform interface to TCP transport protocol,
@@ -114,7 +113,8 @@ public class TcpSocket
    }
    
    /** Converts this object to a String. */
-   public String toString()
+   @Override
+public String toString()
    {  return socket.toString();
    }
 

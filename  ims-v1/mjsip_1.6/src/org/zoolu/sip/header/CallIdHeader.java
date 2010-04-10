@@ -50,7 +50,7 @@ public class CallIdHeader extends Header
 
    /** Creates a CallIdHeader with value <i>hvalue</i> */
    public CallIdHeader(String hvalue)
-   {  super(SipHeaders.Call_ID,hvalue);
+   {  super(BaseSipHeaders.Call_ID,hvalue);
    }
 
    /** Creates a new CallIdHeader equal to CallIdHeader <i>hd</i> */

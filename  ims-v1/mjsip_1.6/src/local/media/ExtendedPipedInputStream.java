@@ -22,9 +22,9 @@
 package local.media;
 
 
+import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.io.IOException;
 
 
 /** ExtendedPipedInputStream. 
@@ -58,7 +58,8 @@ public class ExtendedPipedInputStream extends PipedInputStream
    //public void connect(PipedOutputStream src) throws IOException
    
    /** Reads the next byte of data from this piped input stream. */
-   public int read() throws IOException
+   @Override
+public int read() throws IOException
    {  try
       {  return super.read();
       }
@@ -69,7 +70,8 @@ public class ExtendedPipedInputStream extends PipedInputStream
    //public int read(byte[] b, int off, int len)
    
    /** Receives a byte of data. */
-   protected void receive(int b) throws IOException
+   @Override
+protected void receive(int b) throws IOException
    {  try
       {  if (in!=out) super.receive(b);
       }

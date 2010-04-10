@@ -28,16 +28,23 @@
 package org.zoolu.sip.dialog;
 
 
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.transaction.*;
-import org.zoolu.sip.dialog.*;
-import org.zoolu.sip.message.*;
-import org.zoolu.sip.header.*;
-import org.zoolu.sip.header.*;
-import org.zoolu.sip.provider.*;
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.header.EventHeader;
+import org.zoolu.sip.header.ExpiresHeader;
+import org.zoolu.sip.header.StatusLine;
+import org.zoolu.sip.header.SubscriptionStateHeader;
+import org.zoolu.sip.message.BaseMessageFactory;
+import org.zoolu.sip.message.Message;
+import org.zoolu.sip.message.MessageFactory;
+import org.zoolu.sip.message.SipMethods;
+import org.zoolu.sip.message.SipResponses;
+import org.zoolu.sip.provider.MethodIdentifier;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
+import org.zoolu.sip.transaction.TransactionClient;
+import org.zoolu.sip.transaction.TransactionClientListener;
+import org.zoolu.sip.transaction.TransactionServer;
 import org.zoolu.tools.LogLevel;
-
-import java.util.Date;
 
 
 /** NotifierDialog.
@@ -86,7 +93,8 @@ public class NotifierDialog extends Dialog implements TransactionClientListener/
    // ************************* Protected methods ************************
 
    /** Gets the dialog state */
-   protected String getStatus()
+   @Override
+protected String getStatus()
    {  switch (status)
       {  case D_INIT       : return "D_INIT";
          case D_WAITING    : return "D_WAITING";   
@@ -101,17 +109,20 @@ public class NotifierDialog extends Dialog implements TransactionClientListener/
    // ************************** Public methods **************************
 
    /** Whether the dialog is in "early" state. */
-   public boolean isEarly()
+   @Override
+public boolean isEarly()
    {  return (status<D_PENDING);
    }
 
    /** Whether the dialog is in "confirmed" state. */
-   public boolean isConfirmed()
+   @Override
+public boolean isConfirmed()
    {  return (status>=D_PENDING && status<D_TERMINATED);
    }
 
    /** Whether the dialog is in "active" state. */
-   public boolean isTerminated()
+   @Override
+public boolean isTerminated()
    {  return (status==D_TERMINATED);
    }
 
@@ -210,7 +221,7 @@ public class NotifierDialog extends Dialog implements TransactionClientListener/
    {  printLog("inside respond("+code+","+reason+")",LogLevel.MEDIUM);
       NameAddress contact_url=null;
       if (contact!=null) contact_url=new NameAddress(contact);
-      Message resp=MessageFactory.createResponse(subscribe_req,code,SipResponses.reasonOf(code),contact_url);
+      Message resp=BaseMessageFactory.createResponse(subscribe_req,code,SipResponses.reasonOf(code),contact_url);
       if (expires>=0) resp.setExpiresHeader(new ExpiresHeader(expires));
       if (body!=null) resp.setBody(content_type,body); 
       respond(resp);      
@@ -318,7 +329,8 @@ public class NotifierDialog extends Dialog implements TransactionClientListener/
    // ************** Inherited from SipProviderListener **************
 
    /** When a new Message is received by the SipProvider. */
-   public void onReceivedMessage(SipProvider provider, Message msg)
+   @Override
+public void onReceivedMessage(SipProvider provider, Message msg)
    {  printLog("onReceivedMessage()",LogLevel.MEDIUM);
       if (statusIs(D_TERMINATED))
       {  printLog("subscription already terminated: message discarded",LogLevel.MEDIUM);
@@ -326,7 +338,7 @@ public class NotifierDialog extends Dialog implements TransactionClientListener/
       }
       // else
       if(msg.isRequest() && msg.isSubscribe())
-      {  if (statusIs(this.D_WAITING))
+      {  if (statusIs(NotifierDialog.D_WAITING))
          {  // the first SUBSCRIBE request
             changeStatus(D_SUBSCRIBED);
             sip_provider.removeSipProviderListener(new MethodIdentifier(SipMethods.SUBSCRIBE));
@@ -352,7 +364,8 @@ public class NotifierDialog extends Dialog implements TransactionClientListener/
    //**************************** Logs ****************************/
 
    /** Adds a new string to the default Log */
-   protected void printLog(String str, int level)
+   @Override
+protected void printLog(String str, int level)
    {  if (log!=null) log.println("NotifierDialog#"+dialog_sqn+": "+str,level+SipStack.LOG_LEVEL_DIALOG);  
    }
 

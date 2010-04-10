@@ -22,12 +22,6 @@
 package local.net;
 
 
-import java.net.DatagramSocket;
-//import java.net.InetAddress;
-//import java.net.UnknownHostException; 
-//import org.zoolu.tools.Random;
-
-
 /** This abstract class represents a RTP flow for sending or receiving rtp packets. 
  *  <p> A RtpFlow is always associated to a SSRC number that represents the source end point (the S-SAP).
  */

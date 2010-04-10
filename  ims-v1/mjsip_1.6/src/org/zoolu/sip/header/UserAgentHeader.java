@@ -30,7 +30,7 @@ package org.zoolu.sip.header;
 public class UserAgentHeader extends Header
 {
    public UserAgentHeader(String info)
-   {  super(SipHeaders.User_Agent,info);
+   {  super(BaseSipHeaders.User_Agent,info);
    }
 
    public UserAgentHeader(Header hd)

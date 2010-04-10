@@ -2,10 +2,10 @@ package local.ua;
 
 
 
-import java.awt.Panel;
-import java.awt.Image;
-import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Panel;
 
 
 
@@ -29,7 +29,8 @@ public class ImagePanel extends Panel
    {  this.setBackground(Color.black);
    }
 
-   public void paint(Graphics g)
+   @Override
+public void paint(Graphics g)
    {  //System.out.print("*");
       if (image!=null)
       {  int width=this.getSize().width;

@@ -35,7 +35,7 @@ public class ContentLengthHeader extends Header
    //}
 
    public ContentLengthHeader(int len)
-   {  super(SipHeaders.Content_Length,String.valueOf(len));
+   {  super(BaseSipHeaders.Content_Length,String.valueOf(len));
    }
 
    public ContentLengthHeader(Header hd)

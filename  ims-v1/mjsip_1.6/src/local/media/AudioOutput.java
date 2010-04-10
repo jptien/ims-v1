@@ -22,8 +22,13 @@
 package local.media;
 
 
-import javax.sound.sampled.*;
-import java.io.*;
+import java.io.OutputStream;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
 
 
 /** AudioOutput allows the access of system audio output in pure-java manner.

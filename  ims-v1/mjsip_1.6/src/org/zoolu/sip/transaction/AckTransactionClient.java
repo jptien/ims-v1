@@ -24,11 +24,9 @@
 package org.zoolu.sip.transaction;
 
 
-import org.zoolu.sip.address.SipURL;
-import org.zoolu.sip.provider.*;
-import org.zoolu.sip.message.*;
-import org.zoolu.tools.Timer;
-import org.zoolu.tools.TimerListener;
+import org.zoolu.sip.message.Message;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
 import org.zoolu.tools.LogLevel;
 
 
@@ -64,7 +62,8 @@ public class AckTransactionClient extends Transaction
    }     
          
    /** Method used to drop an active transaction. */
-   public void terminate()
+   @Override
+public void terminate()
    {  changeStatus(STATE_TERMINATED);  
       // (CHANGE-040421) free the link to transaction_listener
       transaction_listener=null;
@@ -74,7 +73,8 @@ public class AckTransactionClient extends Transaction
    //**************************** Logs ****************************/
 
    /** Adds a new string to the default Log */
-   protected void printLog(String str, int level)
+   @Override
+protected void printLog(String str, int level)
    {  if (log!=null) log.println("AckTransactionClient#"+transaction_sqn+": "+str,level+SipStack.LOG_LEVEL_TRANSACTION);  
    }
 

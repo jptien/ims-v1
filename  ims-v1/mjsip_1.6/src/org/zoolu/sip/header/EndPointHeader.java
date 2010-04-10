@@ -24,7 +24,8 @@
 package org.zoolu.sip.header;
 
 
-import org.zoolu.sip.address.*;
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.address.SipURL;
 import org.zoolu.sip.provider.SipParser;
 
 
@@ -89,7 +90,8 @@ public abstract class EndPointHeader extends NameAddressHeader
      * eventual EndPointHeader field parameters (e.g. 'tag' param) from the returnerd NameAddress.
      * @return the end point NameAddress or null if NameAddress does not exist
      * (that leads to the wildcard in case of ContactHeader) */
-   public NameAddress getNameAddress()
+   @Override
+public NameAddress getNameAddress()
    {  NameAddress naddr=(new SipParser(value)).getNameAddress();
       // patch for removing eventual 'tag' or other EndPointHeader parameters from NameAddress
       SipURL url=naddr.getAddress();

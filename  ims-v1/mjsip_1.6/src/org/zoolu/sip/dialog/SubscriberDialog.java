@@ -28,15 +28,21 @@
 package org.zoolu.sip.dialog;
 
 
-import org.zoolu.sip.address.*;
-import org.zoolu.sip.transaction.*;
-import org.zoolu.sip.dialog.*;
-import org.zoolu.sip.message.*;
-import org.zoolu.sip.header.*;
-import org.zoolu.sip.provider.*;
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.address.SipURL;
+import org.zoolu.sip.header.AcceptHeader;
+import org.zoolu.sip.header.ExpiresHeader;
+import org.zoolu.sip.header.StatusLine;
+import org.zoolu.sip.message.BaseMessageFactory;
+import org.zoolu.sip.message.Message;
+import org.zoolu.sip.message.MessageFactory;
+import org.zoolu.sip.message.SipResponses;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
+import org.zoolu.sip.transaction.TransactionClient;
+import org.zoolu.sip.transaction.TransactionClientListener;
+import org.zoolu.sip.transaction.TransactionServer;
 import org.zoolu.tools.LogLevel;
-
-import java.util.Date;
 
 
 /** SubscriberDialog.
@@ -82,7 +88,8 @@ public class SubscriberDialog extends Dialog implements TransactionClientListene
    protected static final int D_TERMINATED=9;
 
    /** Gets the dialog state */
-   protected String getStatus()
+   @Override
+protected String getStatus()
    {  switch (status)
       {  case D_INIT       : return "D_INIT";
          case D_SUBSCRIBING: return "D_SUBSCRIBING";   
@@ -99,17 +106,20 @@ public class SubscriberDialog extends Dialog implements TransactionClientListene
 
 
    /** Whether the dialog is in "early" state. */
-   public boolean isEarly()
+   @Override
+public boolean isEarly()
    {  return (status<D_ACCEPTED);
    }
 
    /** Whether the dialog is in "confirmed" state. */
-   public boolean isConfirmed()
+   @Override
+public boolean isConfirmed()
    {  return (status>=D_ACCEPTED && status<D_TERMINATED);
    }
 
    /** Whether the dialog is in "active" state. */
-   public boolean isTerminated()
+   @Override
+public boolean isTerminated()
    {  return (status==D_TERMINATED);
    }
 
@@ -248,7 +258,8 @@ public class SubscriberDialog extends Dialog implements TransactionClientListene
    // ***************** Inherited from SipProviderListener *****************
    
    /** When a new Message is received by the SipProvider. */
-   public void onReceivedMessage(SipProvider sip_provider, Message msg)
+   @Override
+public void onReceivedMessage(SipProvider sip_provider, Message msg)
    {  printLog("onReceivedMessage()",LogLevel.MEDIUM);
       if (statusIs(D_TERMINATED))
       {  printLog("subscription already terminated: message discarded",LogLevel.MEDIUM);
@@ -258,7 +269,7 @@ public class SubscriberDialog extends Dialog implements TransactionClientListene
       if (msg.isRequest() && msg.isNotify())
       {  
          TransactionServer ts=new TransactionServer(sip_provider,msg,null);
-         ts.respondWith(MessageFactory.createResponse(msg,200,SipResponses.reasonOf(200),null));
+         ts.respondWith(BaseMessageFactory.createResponse(msg,200,SipResponses.reasonOf(200),null));
 
          NameAddress to=msg.getToHeader().getNameAddress();
          NameAddress from=msg.getFromHeader().getNameAddress();
@@ -297,7 +308,8 @@ public class SubscriberDialog extends Dialog implements TransactionClientListene
    //**************************** Logs ****************************/
 
    /** Adds a new string to the default Log */
-   protected void printLog(String str, int level)
+   @Override
+protected void printLog(String str, int level)
    {  if (log!=null) log.println("SubscriberDialog#"+dialog_sqn+": "+str,level+SipStack.LOG_LEVEL_DIALOG);  
    }
 

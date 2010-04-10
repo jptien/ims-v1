@@ -24,9 +24,10 @@
 package org.zoolu.sip.header;
 
 
+import java.util.Date;
+
 import org.zoolu.sip.provider.SipParser;
 import org.zoolu.tools.Parser;
-import java.util.Date;
 
 
 /** SIP Header Expires.
@@ -41,17 +42,17 @@ public class ExpiresHeader extends SipDateHeader
    //}
 
    public ExpiresHeader(String hvalue)
-   {  super(SipHeaders.Expires,hvalue);
+   {  super(BaseSipHeaders.Expires,hvalue);
    }
 
    /** Creates a new ExpiresHeader based on a Date value. */
    public ExpiresHeader(Date date)
-   {  super(SipHeaders.Expires,date);
+   {  super(BaseSipHeaders.Expires,date);
    }
    
    /** Creates a new ExpiresHeader with delta-seconds as value. */
    public ExpiresHeader(int seconds)
-   {  super(SipHeaders.Expires,(String)null);
+   {  super(BaseSipHeaders.Expires,(String)null);
       value=String.valueOf(seconds);
    }
 
@@ -80,7 +81,8 @@ public class ExpiresHeader extends SipDateHeader
    }
 
    /** Gets value of ExpiresHeader as absolute date */
-   public Date getDate()
+   @Override
+public Date getDate()
    {  Date date=null;
       if (isDate())
       {  date=(new SipParser((new Parser(value)).getStringUnquoted())).getDate();

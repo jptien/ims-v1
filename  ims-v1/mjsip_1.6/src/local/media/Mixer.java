@@ -22,9 +22,11 @@
 package local.media;
 
 
-import java.io.*;
-import java.util.Hashtable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.Hashtable;
 
 
 /** MixerLine is a simple G711 mixer with M input lines (OutputStreams)

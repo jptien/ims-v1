@@ -24,12 +24,16 @@
 package org.zoolu.sip.transaction;
 
 
-import org.zoolu.sip.address.SipURL;
-import org.zoolu.sip.provider.*;
-import org.zoolu.sip.message.*;
-import org.zoolu.tools.Timer;
-import org.zoolu.tools.TimerListener;
+import org.zoolu.sip.message.BaseMessageFactory;
+import org.zoolu.sip.message.BaseSipMethods;
+import org.zoolu.sip.message.Message;
+import org.zoolu.sip.message.SipResponses;
+import org.zoolu.sip.provider.ConnectionIdentifier;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
+import org.zoolu.sip.provider.TransactionIdentifier;
 import org.zoolu.tools.LogLevel;
+import org.zoolu.tools.Timer;
 
 
 /** INVITE server transaction as defined in RFC 3261 (Section 17.2.1).
@@ -68,7 +72,7 @@ public class InviteTransactionServer extends TransactionServer
    /** Creates a new InviteTransactionServer. */
    public InviteTransactionServer(SipProvider sip_provider, InviteTransactionServerListener listener)
    {  super(sip_provider);
-      init(listener,new TransactionIdentifier(SipMethods.INVITE),null);
+      init(listener,new TransactionIdentifier(BaseSipMethods.INVITE),null);
    }  
       
    /** Creates a new InviteTransactionServer for the already received INVITE request <i>invite</i>. */
@@ -81,7 +85,7 @@ public class InviteTransactionServer extends TransactionServer
       sip_provider.addSipProviderListener(transaction_id,this);
       // automatically send "100 Tryng" response and go to STATE_PROCEEDING
       if (auto_trying)
-      {  Message trying100=MessageFactory.createResponse(request,100,SipResponses.reasonOf(100),null);
+      {  Message trying100=BaseMessageFactory.createResponse(request,100,SipResponses.reasonOf(100),null);
          respondWith(trying100); // this method makes it going automatically to STATE_PROCEEDING
       }
    }  
@@ -97,7 +101,7 @@ public class InviteTransactionServer extends TransactionServer
       sip_provider.addSipProviderListener(transaction_id,this);
       // automatically send "100 Tryng" response and go to STATE_PROCEEDING
       if (auto_trying)
-      {  Message trying100=MessageFactory.createResponse(request,100,SipResponses.reasonOf(100),null);
+      {  Message trying100=BaseMessageFactory.createResponse(request,100,SipResponses.reasonOf(100),null);
          respondWith(trying100); // this method makes it going automatically to STATE_PROCEEDING
       }
    }  
@@ -122,16 +126,18 @@ public class InviteTransactionServer extends TransactionServer
 
 
    /** Starts the InviteTransactionServer. */
-   public void listen()
+   @Override
+public void listen()
    {  printLog("start",LogLevel.LOW);
       if (statusIs(STATE_IDLE))
       {  changeStatus(STATE_WAITING);  
-         sip_provider.addSipProviderListener(new TransactionIdentifier(SipMethods.INVITE),this); 
+         sip_provider.addSipProviderListener(new TransactionIdentifier(BaseSipMethods.INVITE),this); 
       }
    }  
 
    /** Sends a response message */
-   public void respondWith(Message resp)
+   @Override
+public void respondWith(Message resp)
    {  response=resp;
       int code=response.getStatusLine().getCode();
       if (statusIs(STATE_TRYING) || statusIs(STATE_PROCEEDING)) sip_provider.sendMessage(response,connection_id);         
@@ -161,23 +167,24 @@ public class InviteTransactionServer extends TransactionServer
 
    /** Method derived from interface SipListener.
      * It's fired from the SipProvider when a new message is catch for to the present ServerTransaction. */
-   public void onReceivedMessage(SipProvider provider, Message msg)
+   @Override
+public void onReceivedMessage(SipProvider provider, Message msg)
    {  if (msg.isRequest())
       {  String req_method=msg.getRequestLine().getMethod();
          
          // invite received
-         if (req_method.equals(SipMethods.INVITE))
+         if (req_method.equals(BaseSipMethods.INVITE))
          {
             if (statusIs(STATE_WAITING))
             {  request=new Message(msg);
                connection_id=request.getConnectionId();
                transaction_id=request.getTransactionId();
                sip_provider.addSipProviderListener(transaction_id,this); 
-               sip_provider.removeSipProviderListener(new TransactionIdentifier(SipMethods.INVITE));
+               sip_provider.removeSipProviderListener(new TransactionIdentifier(BaseSipMethods.INVITE));
                changeStatus(STATE_TRYING);
                // automatically send "100 Tryng" response and go to STATE_PROCEEDING
                if (auto_trying)
-               {  Message trying100=MessageFactory.createResponse(request,100,SipResponses.reasonOf(100),null);
+               {  Message trying100=BaseMessageFactory.createResponse(request,100,SipResponses.reasonOf(100),null);
                   respondWith(trying100); // this method makes it going automatically to STATE_PROCEEDING
                }
                if (transaction_listener!=null) transaction_listener.onTransRequest(this,msg);
@@ -190,7 +197,7 @@ public class InviteTransactionServer extends TransactionServer
             }
          }
          // ack received
-         if (req_method.equals(SipMethods.ACK) && statusIs(STATE_COMPLETED))
+         if (req_method.equals(BaseSipMethods.ACK) && statusIs(STATE_COMPLETED))
          {  retransmission_to.halt();
             end_to.halt();
             changeStatus(STATE_CONFIRMED);
@@ -203,7 +210,8 @@ public class InviteTransactionServer extends TransactionServer
 
    /** Method derived from interface TimerListener.
      * It's fired from an active Timer. */
-   public void onTimeout(Timer to)
+   @Override
+public void onTimeout(Timer to)
    {  try
       {  if (to.equals(retransmission_to) && statusIs(STATE_COMPLETED))
          {  printLog("Retransmission timeout expired",LogLevel.HIGH);
@@ -233,11 +241,12 @@ public class InviteTransactionServer extends TransactionServer
    }   
 
    /** Method used to drop an active transaction */
-   public void terminate()
+   @Override
+public void terminate()
    {  retransmission_to.halt();
       clearing_to.halt();     
       end_to.halt();
-      if (statusIs(STATE_TRYING)) sip_provider.removeSipProviderListener(new TransactionIdentifier(SipMethods.INVITE));
+      if (statusIs(STATE_TRYING)) sip_provider.removeSipProviderListener(new TransactionIdentifier(BaseSipMethods.INVITE));
          else sip_provider.removeSipProviderListener(transaction_id);
       changeStatus(STATE_TERMINATED);
       transaction_listener=null;

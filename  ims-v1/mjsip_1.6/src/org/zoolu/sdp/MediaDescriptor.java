@@ -90,7 +90,7 @@ public class MediaDescriptor
       av=new Vector(attributes.size());
       av.setSize(attributes.size());
       for (int i=0; i<attributes.size(); i++)
-         av.setElementAt((AttributeField)attributes.elementAt(i),i);
+         av.setElementAt(attributes.elementAt(i),i);
    }
 
    /** Creates a new MediaDescriptor with m <i>media</i>, c <i>connection</i>,
@@ -137,7 +137,7 @@ public class MediaDescriptor
    public Vector getAttributes()
    {  Vector v=new Vector(av.size());
       for (int i=0; i<av.size(); i++)
-         v.addElement((AttributeField)av.elementAt(i));
+         v.addElement(av.elementAt(i));
       return v;
    } 
 
@@ -184,7 +184,8 @@ public class MediaDescriptor
    
    /** Gets a String rapresentation of the MediaDescriptor.
      * @return the string representation */
-   public String toString()
+   @Override
+public String toString()
    {  String str=""; str+=m; if (c!=null) str+=c;
       for (int i=0; i<av.size(); i++) str+=(AttributeField)av.elementAt(i);
       return str;

@@ -22,11 +22,9 @@
 package local.net;
 
 
-import org.zoolu.net.*;
-
-import org.zoolu.tools.Timer;
-import org.zoolu.tools.TimerListener;
-import java.util.Date;
+import org.zoolu.net.SocketAddress;
+import org.zoolu.net.UdpPacket;
+import org.zoolu.net.UdpSocket;
 
 
 /** KeepAliveUdp thread, for keeping the connection up toward a target node
@@ -150,7 +148,8 @@ public class KeepAliveUdp extends Thread
 
 
    /** Main thread. */
-   public void run()
+   @Override
+public void run()
    {  try   
       {  while(!stop)
          {  sendToken();
@@ -166,7 +165,8 @@ public class KeepAliveUdp extends Thread
    
        
    /** Gets a String representation of the Object */
-   public String toString()
+   @Override
+public String toString()
    {  String str=null;
       if (udp_socket!=null)
       {  str="udp:"+udp_socket.getLocalAddress()+":"+udp_socket.getLocalPort()+"-->"+target.toString();

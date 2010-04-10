@@ -22,8 +22,16 @@
 package local.media;
 
 
-import javax.sound.sampled.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.SourceDataLine;
 
 
 /** AudioOutputStream is equivalent to javax.sound.sampled.AudioInputStream
@@ -80,17 +88,20 @@ class AudioOutputStream extends OutputStream
    }
    
    /** Closes this output stream and releases any system resources associated with this stream. */
-   public void close()
+   @Override
+public void close()
    {  //source_line.close();
    }
    
    /** Flushes this output stream and forces any buffered output bytes to be written out. */
-   public void flush()
+   @Override
+public void flush()
    {  source_line.flush();
    }
    
    /** Writes b.length bytes from the specified byte array to this output stream. */
-   public void write(byte[] b) throws IOException
+   @Override
+public void write(byte[] b) throws IOException
    {  if (output_stream!=null)
       {  output_stream.write(b);
          int len=input_stream.read(buff,0,buff.length);
@@ -102,7 +113,8 @@ class AudioOutputStream extends OutputStream
    }
    
    /** Writes len bytes from the specified byte array starting at offset off to this output stream. */
-   public void write(byte[] b, int off, int len) throws IOException
+   @Override
+public void write(byte[] b, int off, int len) throws IOException
    {  if (output_stream!=null)
       {  output_stream.write(b,off,len);
          len=input_stream.read(buff,0,buff.length);
@@ -114,7 +126,8 @@ class AudioOutputStream extends OutputStream
    }
    
    /** Writes the specified byte to this output stream. */
-   public void write(int b) throws IOException
+   @Override
+public void write(int b) throws IOException
    {  if (output_stream!=null)
       {  output_stream.write(b);
          int len=input_stream.read(buff,0,buff.length);

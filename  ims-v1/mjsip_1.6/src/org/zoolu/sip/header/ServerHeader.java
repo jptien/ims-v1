@@ -30,7 +30,7 @@ package org.zoolu.sip.header;
 public class ServerHeader extends Header
 {
    public ServerHeader(String info)
-   {  super(SipHeaders.Server,info);
+   {  super(BaseSipHeaders.Server,info);
    }
 
    public ServerHeader(Header hd)

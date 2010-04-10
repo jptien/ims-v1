@@ -24,7 +24,9 @@
 package org.zoolu.tools;
 
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Random;
 
 
@@ -77,7 +79,7 @@ public class MD5OTP
    
    /** Inits the MD5OTP algorithm */
    private void init(int size, byte[] skey, byte[] iv)
-   {  this.size=size;
+   {  MD5OTP.size=size;
       if (iv==null) { iv=new byte[size]; for (int i=0; i<size; i++) iv[i]=0; }
       this.skey=skey;
       //skey=hash(cat(key,iv));
@@ -161,9 +163,9 @@ public class MD5OTP
    private static String asHex(byte[] bb)
    {  StringBuffer buf=new StringBuffer(bb.length*2);
       for (int i=0; i<bb.length; i++)
-      {  if (((int)bb[i] & 0xff) < 0x10) buf.append("0");
+      {  if ((bb[i] & 0xff) < 0x10) buf.append("0");
          //buf.append(Long.toString((int)bb[i] & 0xff, 16));
-         buf.append(Integer.toHexString((int)bb[i] & 0xff));
+         buf.append(Integer.toHexString(bb[i] & 0xff));
       }
       return buf.toString();
    }

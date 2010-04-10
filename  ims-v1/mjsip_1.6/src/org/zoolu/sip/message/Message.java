@@ -23,16 +23,16 @@
 
 package org.zoolu.sip.message;
 
+import org.zoolu.net.UdpPacket;
+import org.zoolu.sip.header.AllowEventsHeader;
+import org.zoolu.sip.header.BaseSipHeaders;
+import org.zoolu.sip.header.EventHeader;
 import org.zoolu.sip.header.Header;
-import org.zoolu.sip.header.MultipleHeader;
 import org.zoolu.sip.header.PAccessNetworkInfoHeader;
 import org.zoolu.sip.header.ReferToHeader;
 import org.zoolu.sip.header.ReferredByHeader;
-import org.zoolu.sip.header.EventHeader;
-import org.zoolu.sip.header.AllowEventsHeader;
-import org.zoolu.sip.header.SubscriptionStateHeader;
 import org.zoolu.sip.header.SipHeaders;
-import org.zoolu.net.UdpPacket;
+import org.zoolu.sip.header.SubscriptionStateHeader;
 
 /**
  * Class Message extends class sip.message.BaseMessage adding some SIP
@@ -74,6 +74,7 @@ public class Message extends org.zoolu.sip.message.BaseMessage {
 	}
 
 	/** Creates and returns a clone of the Message */
+	@Override
 	public Object clone() {
 		return new Message(this);
 	}
@@ -238,12 +239,12 @@ public class Message extends org.zoolu.sip.message.BaseMessage {
 
 	/** Whether the message has the P-Access-Network-Info header */
 	public boolean hasPAccessNetworkInfoHeader() {
-		return hasHeader(SipHeaders.P_Access_Network_Info);
+		return hasHeader(BaseSipHeaders.P_Access_Network_Info);
 	}
 
 	/** Gets PAccessNetworkInfoHeader */
 	public PAccessNetworkInfoHeader getPAccessNetworkInfoHeader() {
-		Header h = getHeader(SipHeaders.P_Access_Network_Info);
+		Header h = getHeader(BaseSipHeaders.P_Access_Network_Info);
 		if (h == null)
 			return null;
 		return new PAccessNetworkInfoHeader(h);
@@ -256,6 +257,6 @@ public class Message extends org.zoolu.sip.message.BaseMessage {
 
 	/** Removes SubscriptionStateHeader from Message (if it exists) */
 	public void removePAccessNetworkInfoHeader() {
-		removeHeader(SipHeaders.P_Access_Network_Info);
+		removeHeader(BaseSipHeaders.P_Access_Network_Info);
 	}
 }

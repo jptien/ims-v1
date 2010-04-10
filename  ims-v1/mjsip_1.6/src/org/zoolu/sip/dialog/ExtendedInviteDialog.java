@@ -24,19 +24,26 @@
 package org.zoolu.sip.dialog;
 
 
-import org.zoolu.sip.provider.*;
-import org.zoolu.sip.address.NameAddress;
-import org.zoolu.sip.header.StatusLine;
-import org.zoolu.sip.header.RequestLine;
-import org.zoolu.sip.header.AuthorizationHeader;
-import org.zoolu.sip.header.WwwAuthenticateHeader;
-import org.zoolu.sip.header.ProxyAuthenticateHeader;
-import org.zoolu.sip.transaction.*;
-import org.zoolu.sip.message.*;
-import org.zoolu.sip.authentication.DigestAuthentication;
-import org.zoolu.tools.LogLevel;
-
 import java.util.Hashtable;
+
+import org.zoolu.sip.address.NameAddress;
+import org.zoolu.sip.authentication.DigestAuthentication;
+import org.zoolu.sip.header.AuthorizationHeader;
+import org.zoolu.sip.header.RequestLine;
+import org.zoolu.sip.header.StatusLine;
+import org.zoolu.sip.header.WwwAuthenticateHeader;
+import org.zoolu.sip.message.BaseMessageFactory;
+import org.zoolu.sip.message.BaseSipMethods;
+import org.zoolu.sip.message.Message;
+import org.zoolu.sip.message.MessageFactory;
+import org.zoolu.sip.message.SipMethods;
+import org.zoolu.sip.message.SipResponses;
+import org.zoolu.sip.provider.SipProvider;
+import org.zoolu.sip.provider.SipStack;
+import org.zoolu.sip.provider.TransactionIdentifier;
+import org.zoolu.sip.transaction.TransactionClient;
+import org.zoolu.sip.transaction.TransactionServer;
+import org.zoolu.tools.LogLevel;
 
 
 /** Class ExtendedInviteDialog can be used to manage extended invite dialogs.
@@ -140,10 +147,11 @@ public class ExtendedInviteDialog extends org.zoolu.sip.dialog.InviteDialog
 
 
    /** Responds with <i>resp</i> */
-   public void respond(Message resp)
+   @Override
+public void respond(Message resp)
    {  printLog("inside respond(resp)",LogLevel.MEDIUM);
       String method=resp.getCSeqHeader().getMethod();
-      if (method.equals(SipMethods.INVITE) || method.equals(SipMethods.CANCEL) || method.equals(SipMethods.BYE))
+      if (method.equals(BaseSipMethods.INVITE) || method.equals(BaseSipMethods.CANCEL) || method.equals(BaseSipMethods.BYE))
       {  super.respond(resp);
       }
       else
@@ -163,7 +171,7 @@ public class ExtendedInviteDialog extends org.zoolu.sip.dialog.InviteDialog
    /** Accept a REFER */
    public void acceptRefer(Message req)
    {  printLog("inside acceptRefer(refer)",LogLevel.MEDIUM);
-      Message resp=MessageFactory.createResponse(req,202,SipResponses.reasonOf(200),null);
+      Message resp=BaseMessageFactory.createResponse(req,202,SipResponses.reasonOf(200),null);
       respond(resp);
    } 
 
@@ -171,13 +179,14 @@ public class ExtendedInviteDialog extends org.zoolu.sip.dialog.InviteDialog
    /** Refuse a REFER */
    public void refuseRefer(Message req)
    {  printLog("inside refuseRefer(refer)",LogLevel.MEDIUM);
-      Message resp=MessageFactory.createResponse(req,603,SipResponses.reasonOf(603),null);
+      Message resp=BaseMessageFactory.createResponse(req,603,SipResponses.reasonOf(603),null);
       respond(resp);
    } 
 
 
    /** Inherited from class SipProviderListener. */
-   public void onReceivedMessage(SipProvider provider, Message msg)
+   @Override
+public void onReceivedMessage(SipProvider provider, Message msg)
    {  printLog("Message received: "+msg.getFirstLine().substring(0,msg.toString().indexOf('\r')),LogLevel.LOW);
       if (msg.isResponse())
       {  super.onReceivedMessage(provider,msg);
@@ -201,7 +210,7 @@ public class ExtendedInviteDialog extends org.zoolu.sip.dialog.InviteDialog
          } 
          else
          if (msg.isNotify())
-         {  Message resp=MessageFactory.createResponse(msg,200,SipResponses.reasonOf(200),null);
+         {  Message resp=BaseMessageFactory.createResponse(msg,200,SipResponses.reasonOf(200),null);
             respond(resp);
             String event=msg.getEventHeader().getValue();
             String sipfragment=msg.getBody();
@@ -217,7 +226,8 @@ public class ExtendedInviteDialog extends org.zoolu.sip.dialog.InviteDialog
 
    /** Inherited from TransactionClientListener.
      * When the TransactionClientListener goes into the "Completed" state, receiving a failure response */
-   public void onTransFailureResponse(TransactionClient tc, Message msg)
+   @Override
+public void onTransFailureResponse(TransactionClient tc, Message msg)
    {  printLog("inside onTransFailureResponse("+tc.getTransactionId()+",msg)",LogLevel.LOW);
       String method=tc.getTransactionMethod();
       StatusLine status_line=msg.getStatusLine();
@@ -248,7 +258,7 @@ public class ExtendedInviteDialog extends org.zoolu.sip.dialog.InviteDialog
       }
       else
       // AUTHENTICATION-END
-      if (method.equals(SipMethods.INVITE) || method.equals(SipMethods.CANCEL) || method.equals(SipMethods.BYE))
+      if (method.equals(BaseSipMethods.INVITE) || method.equals(BaseSipMethods.CANCEL) || method.equals(BaseSipMethods.BYE))
       {  super.onTransFailureResponse(tc,msg);
       }
       else
@@ -265,7 +275,8 @@ public class ExtendedInviteDialog extends org.zoolu.sip.dialog.InviteDialog
 
    /** Inherited from TransactionClientListener.
      * When an TransactionClientListener goes into the "Terminated" state, receiving a 2xx response  */
-   public void onTransSuccessResponse(TransactionClient t, Message msg)
+   @Override
+public void onTransSuccessResponse(TransactionClient t, Message msg)
    {  printLog("inside onTransSuccessResponse("+t.getTransactionId()+",msg)",LogLevel.LOW);
       attempts=0;
       String method=t.getTransactionMethod();
@@ -273,7 +284,7 @@ public class ExtendedInviteDialog extends org.zoolu.sip.dialog.InviteDialog
       int code=status_line.getCode();
       String reason=status_line.getReason();
       
-      if (method.equals(SipMethods.INVITE) || method.equals(SipMethods.CANCEL) || method.equals(SipMethods.BYE))
+      if (method.equals(BaseSipMethods.INVITE) || method.equals(BaseSipMethods.CANCEL) || method.equals(BaseSipMethods.BYE))
       {  super.onTransSuccessResponse(t,msg);
       }
       else
@@ -290,10 +301,11 @@ public class ExtendedInviteDialog extends org.zoolu.sip.dialog.InviteDialog
 
    /** Inherited from TransactionClientListener.
      * When the TransactionClient goes into the "Terminated" state, caused by transaction timeout */
-   public void onTransTimeout(TransactionClient t)
+   @Override
+public void onTransTimeout(TransactionClient t)
    {  printLog("inside onTransTimeout("+t.getTransactionId()+",msg)",LogLevel.LOW);
       String method=t.getTransactionMethod();
-      if (method.equals(SipMethods.INVITE) || method.equals(SipMethods.BYE))
+      if (method.equals(BaseSipMethods.INVITE) || method.equals(BaseSipMethods.BYE))
       {  super.onTransTimeout(t);
       }
       else
@@ -306,7 +318,8 @@ public class ExtendedInviteDialog extends org.zoolu.sip.dialog.InviteDialog
    //**************************** Logs ****************************/
 
    /** Adds a new string to the default Log */
-   protected void printLog(String str, int level)
+   @Override
+protected void printLog(String str, int level)
    {  if (log!=null) log.println("ExtendedInviteDialog#"+dialog_sqn+": "+str,level+SipStack.LOG_LEVEL_DIALOG);  
    }
 

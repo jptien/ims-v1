@@ -24,11 +24,7 @@
 package org.zoolu.sip.provider;
 
 
-import org.zoolu.sip.transaction.Transaction;
-import org.zoolu.sip.message.Message;
-import org.zoolu.sip.message.SipMethods;
-import org.zoolu.sip.header.ViaHeader;
-import org.zoolu.sip.header.CSeqHeader;
+import org.zoolu.sip.message.BaseSipMethods;
 
 
 /** TransactionIdentifier is used to address specific transaction to the SipProvider.
@@ -48,7 +44,7 @@ public class TransactionIdentifier extends Identifier
    /** Costructs a new TransactionIdentifier based on call-id, seqn, method, sent-by, and branch. */
    public TransactionIdentifier(String call_id, long seqn, String method, String sent_by, String branch)
    {  if (branch==null) branch="";
-      if (method.equals(SipMethods.ACK)) method=SipMethods.INVITE; 
+      if (method.equals(BaseSipMethods.ACK)) method=BaseSipMethods.INVITE; 
       id=call_id+"-"+seqn+"-"+method+"-"+sent_by+"-"+branch;
    }
 }

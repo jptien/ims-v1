@@ -35,11 +35,11 @@ public class DateHeader extends SipDateHeader
    //}
 
    public DateHeader(String hvalue)
-   {  super(SipHeaders.Date,hvalue);
+   {  super(BaseSipHeaders.Date,hvalue);
    }
 
    public DateHeader(Date date)
-   {  super(SipHeaders.Date,date);
+   {  super(BaseSipHeaders.Date,date);
    }
 
    public DateHeader(Header hd)
