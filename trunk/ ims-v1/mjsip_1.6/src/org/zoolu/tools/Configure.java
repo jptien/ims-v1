@@ -24,11 +24,7 @@
 package org.zoolu.tools;
 
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 
 /** Configure helps the loading and saving of configuration data.
@@ -84,7 +80,14 @@ public class Configure
             if (line==null) break;
          
             if (!line.startsWith("#"))
-            {  if (configurable==null) parseLine(line); else configurable.parseLine(line);
+            {  if (configurable==null)
+            	{
+            		parseLine(line); 
+            	}
+            	else
+            	{
+            		configurable.parseLine(line);
+            	}
             }
          } 
          in.close();

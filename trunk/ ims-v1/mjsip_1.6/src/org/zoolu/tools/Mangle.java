@@ -24,6 +24,11 @@
 package org.zoolu.tools;
 
 
+import java.io.*;
+import java.util.Vector;
+import java.util.Random;
+
+
 /** Mangle collects some static methods for mangling binary-data structures 
   */
 public class Mangle
@@ -45,14 +50,14 @@ public class Mangle
 
    /** Gets the unsigned representatin of a byte (into a short) */
    public static short uByte(byte b)
-   {  return (short)((b+256)%256);
+   {  return (short)(((short)b+256)%256);
    } 
 
    /** Gets the unsigned representatin of a 32-bit word (into a long) */
    public static long uWord(int n)
    {  long wmask=0x10000;
       wmask*=wmask;
-      return ((n+wmask)%wmask);
+      return (long)(((long)n+wmask)%wmask);
    } 
 
    /** Rotates w left n bits. */
@@ -239,10 +244,10 @@ public class Mangle
    {  int offset=0; 
       int len=64;
       for (int i = 0; offset < len; i++, offset += 4)
-      {  out[i] = ((buffer[offset] & 0xff)) |
-         (((buffer[offset + 1] & 0xff)) << 8) |
-         (((buffer[offset + 2] & 0xff)) << 16) |
-         ((buffer[offset + 3]) << 24);
+      {  out[i] = ((int) (buffer[offset] & 0xff)) |
+         (((int) (buffer[offset + 1] & 0xff)) << 8) |
+         (((int) (buffer[offset + 2] & 0xff)) << 16) |
+         (((int)  buffer[offset + 3]) << 24);
       }
    }
 

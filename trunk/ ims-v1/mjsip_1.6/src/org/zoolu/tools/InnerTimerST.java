@@ -39,8 +39,7 @@ class InnerTimerST extends java.util.TimerTask
       single_timer.schedule(this,timeout);
    }  
 
-   @Override
-public void run()
+   public void run()
    {  if (listener!=null)
       {  listener.onInnerTimeout();
          listener=null;
