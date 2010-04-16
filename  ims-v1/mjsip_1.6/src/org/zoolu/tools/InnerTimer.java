@@ -36,8 +36,7 @@ class InnerTimer extends Thread
       start(); 
    }  
 
-   @Override
-public void run()
+   public void run()
    {  if (listener!=null)
       {  try
          {  Thread.sleep(timeout);

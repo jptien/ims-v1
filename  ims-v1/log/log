@@ -1,12 +1,12 @@
-16:27:56.781 Sat 10 Apr 2010, 220.70.2.141:5060/udp (427 bytes): sent
+18:02:33.039 Wed 14 Apr 2010, 220.70.2.141:5060/udp (427 bytes): sent
 REGISTER sip:220.70.2.141 SIP/2.0
-Via: SIP/2.0/UDP 220.149.84.130:5060;rport;branch=z9hG4bK23746
+Via: SIP/2.0/UDP 220.149.84.240:5060;rport;branch=z9hG4bK03704
 Max-Forwards: 70
 To: <sip:2003@220.70.2.141>
-From: <sip:2003@220.70.2.141>;tag=z9hG4bK13963654
-Call-ID: 009230538571@220.149.84.130
+From: <sip:2003@220.70.2.141>;tag=z9hG4bK67420850
+Call-ID: 074500923132@220.149.84.240
 CSeq: 1 REGISTER
-Contact: <sip:2003@220.149.84.130>
+Contact: <sip:2003@220.149.84.240>
 Expires: 3600
 User-Agent: mjsip stack 1.6
 P-Access-Network-Info: 3GPP-UTRAN-TDD; utran-cell-id-3gpp=234151D0FCE11
@@ -14,32 +14,49 @@ Content-Length: 0
 
 -----End-of-message-----
 
-16:27:56.953 Sat 10 Apr 2010, 220.70.2.141:5060/udp (416 bytes): received
-SIP/2.0 200 OK
-Via: SIP/2.0/UDP 220.149.84.130:5060;rport=5060;branch=z9hG4bK23746
-To: <sip:2003@220.70.2.141>;tag=2ccd5fd7e1a9f58eae7981d1411dc621.0b4a
-From: <sip:2003@220.70.2.141>;tag=z9hG4bK13963654
-Call-ID: 009230538571@220.149.84.130
+18:02:33.539 Wed 14 Apr 2010, 220.70.2.141:5060/udp (427 bytes): sent
+REGISTER sip:220.70.2.141 SIP/2.0
+Via: SIP/2.0/UDP 220.149.84.240:5060;rport;branch=z9hG4bK03704
+Max-Forwards: 70
+To: <sip:2003@220.70.2.141>
+From: <sip:2003@220.70.2.141>;tag=z9hG4bK67420850
+Call-ID: 074500923132@220.149.84.240
 CSeq: 1 REGISTER
-Contact: <sip:2003@220.149.84.240>;expires=396, <sip:2003@220.149.84.130>;expires=3600
+Contact: <sip:2003@220.149.84.240>
+Expires: 3600
+User-Agent: mjsip stack 1.6
+P-Access-Network-Info: 3GPP-UTRAN-TDD; utran-cell-id-3gpp=234151D0FCE11
+Content-Length: 0
+
+-----End-of-message-----
+
+18:02:33.543 Wed 14 Apr 2010, 220.70.2.141:5060/udp (377 bytes): received
+SIP/2.0 200 OK
+Via: SIP/2.0/UDP 220.149.84.240:5060;rport=5060;branch=z9hG4bK03704
+To: <sip:2003@220.70.2.141>;tag=2ccd5fd7e1a9f58eae7981d1411dc621.711b
+From: <sip:2003@220.70.2.141>;tag=z9hG4bK67420850
+Call-ID: 074500923132@220.149.84.240
+CSeq: 1 REGISTER
+Contact: <sip:2003@220.149.84.240>;expires=3600
 Server: OpenSER (1.3.1-notls (i386/linux))
 Content-Length: 0
 
 -----End-of-message-----
 
-230538571@220.149.84.130-1-REGISTER-220.149.84.130:5060-z9hG4bK23746, 
-SipProvider-5060: using transport udp
-SipProvider-5060: Resolving host address '220.70.2.141'
 SipProvider-5060: Sending message to udp:220.70.2.141:5060
 
-16:27:56.781 Sat 10 Apr 2010, 220.70.2.141:5060/udp (427 bytes): REGISTER sip:220.70.2.141 SIP/2.0, sent
+18:02:33.539 Wed 14 Apr 2010, 220.70.2.141:5060/udp (427 bytes): REGISTER sip:220.70.2.141 SIP/2.0, sent
 
 
-16:27:56.968 Sat 10 Apr 2010, 220.70.2.141:5060/udp (416 bytes): SIP/2.0 200 OK, received
+18:02:33.545 Wed 14 Apr 2010, 220.70.2.141:5060/udp (377 bytes): SIP/2.0 200 OK, received
 
 SipProvider-5060: received new SIP message
-SipProvider-5060: DEBUG: transaction-id: 009230538571@220.149.84.130-1-REGISTER-220.149.84.130:5060-z9hG4bK23746
-SipProvider-5060: message passed to transaction: 009230538571@220.149.84.130-1-REGISTER-220.149.84.130:5060-z9hG4bK23746
+SipProvider-5060: DEBUG: transaction-id: 074500923132@220.149.84.240-1-REGISTER-220.149.84.240:5060-z9hG4bK03704
+SipProvider-5060: message passed to transaction: 074500923132@220.149.84.240-1-REGISTER-220.149.84.240:5060-z9hG4bK03704
 TransactionClient#1: changed transaction state: T_Completed
 RegisterAgent: Registration success: 200 OK
 UA: Registration success: 200 OK
+TransactionClient#1: Clearing timeout expired
+SipProvider-5060: removing SipProviderListener: 074500923132@220.149.84.240-1-REGISTER-220.149.84.240:5060-z9hG4bK03704
+SipProvider-5060: 1 listeners: INVITE, 
+TransactionClient#1: changed transaction state: T_Terminated

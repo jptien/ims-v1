@@ -87,8 +87,7 @@ public class SimpleDigest extends MessageDigest
    /** MessageDigest block update operation.
      * Continues a message-digest operation,
      * processing another message block, and updating the context. */
-   @Override
-public MessageDigest update(byte[] buffer, int offset, int len)
+   public MessageDigest update(byte[] buffer, int offset, int len)
    {
       if (is_done) return this;
       //else
@@ -105,8 +104,7 @@ public MessageDigest update(byte[] buffer, int offset, int len)
 
    /** MessageDigest finalization. Ends a message-digest operation, writing the
      * the message digest and zeroizing the context. */
-   @Override
-public byte[] doFinal()
+   public byte[] doFinal()
    {
       if (is_done) return message_digest;
       //else

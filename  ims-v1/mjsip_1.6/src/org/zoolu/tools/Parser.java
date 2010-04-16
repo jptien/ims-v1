@@ -24,7 +24,7 @@
 package org.zoolu.tools;
 
 
-import java.util.Vector;
+import java.util.*;
 
 
 /** Class Parser allows the parsing of String objects.
@@ -462,8 +462,7 @@ public class Parser
    //************************* toString *************************
 
    /** convert the rest of the unparsed chars into a string */
-   @Override
-public String toString()
+   public String toString()
    {  return getRemainingString();
    }
 }

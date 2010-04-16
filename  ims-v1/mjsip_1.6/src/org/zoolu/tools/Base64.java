@@ -130,9 +130,9 @@ public class Base64
       
       if (i==iter)
       {
-         // per come è costruita la codifica a base64
+         // per come ?costruita la codifica a base64
          // togliendo gli eventuali caratteri "=" di padding
-         // il resto può essere 0, 2 o 3
+         // il resto pu?essere 0, 2 o 3
      	   if (resto==0)
      	   {
      	   } 
@@ -164,19 +164,15 @@ public class Base64
 
 
    // ******************************* MAIN *******************************
-
    public static void main (String[] args) 
    {
-      String messaggio = args[0];
-      byte[] bmess = messaggio.getBytes();
-      String mess64 = encode(bmess);
-      System.out.println("messaggio codificato: "+mess64);
-      byte[] decodificato = decode(mess64); 
-      String strdecodificato = "";
-      try { 
-      strdecodificato = new String (decodificato,"ISO-8859-1"); 
+      String messaggio = "MjM1NTNjYmU5NjM3YTg5ZDIxOGFlNjRkYWU0N2JmMzU1NWYzMjhiNDM1NzdiOWI5NGE5ZmZhYzM1NGRmYWZiMw==";
+      byte[] btest = decode(messaggio);
+      char[] ctest = new char[64];
+      char[] ctest2= new char[32];
+      for(int i=0;i<64; i++){
+    	  ctest[i] = (char)btest[i];
       }
-      catch (Exception e) { e.printStackTrace();}
-      System.out.println("messaggio decodificato è: "+strdecodificato);      
+      System.out.println(ctest);
    }
 }

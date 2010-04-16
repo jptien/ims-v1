@@ -23,60 +23,120 @@
 
 package org.zoolu.tools;
 
+/**
+ * Generic hash/message-digest algorithm.
+ */
+public abstract class MessageDigest {
+	/**
+	 * MessageDigest block update operation. Continues a message-digest
+	 * operation, processing another message block, and updating the context.
+	 */
+	abstract public MessageDigest update(byte[] buffer, int offset, int len);
 
+	/**
+	 * MessageDigest block update operation. Continues a message-digest
+	 * operation, processing another message block, and updating the context.
+	 */
+	public MessageDigest update(String str) {
+		byte[] buf = str.getBytes();
+		return update(buf, 0, buf.length);
+	}
 
-/** Generic hash/message-digest algorithm.
-  */
-public abstract class MessageDigest
-{  
-   /** MessageDigest block update operation.
-     * Continues a message-digest operation,
-     * processing another message block, and updating the context. */
-   abstract public MessageDigest update(byte[] buffer, int offset, int len);
+	/**
+	 * MessageDigest block update operation. Continues a message-digest
+	 * operation, processing another message block, and updating the context.
+	 */
+	public MessageDigest update(byte[] buffer) {
+		return update(buffer, 0, buffer.length);
+	}
 
+	/**
+	 * MessageDigest finalization. Ends a message-digest operation, writing the
+	 * the message digest and zeroizing the context.
+	 */
+	abstract public byte[] doFinal();
 
-   /** MessageDigest block update operation.
-     * Continues a message-digest operation,
-     * processing another message block, and updating the context. */
-   public MessageDigest update(String str)
-   {  byte[] buf=str.getBytes();
-      return update(buf,0,buf.length);
-   }
+	/** Gets the MessageDigest. The same as doFinal(). */
+	public byte[] getDigest() {
+		return doFinal();
+	}
 
+	/** Gets the Message Digest as string of hex values. */
+	public String asHex() {
+		return asHex(doFinal());
+	}
 
-   /** MessageDigest block update operation.
-     * Continues a message-digest operation,
-     * processing another message block, and updating the context. */
-   public MessageDigest update(byte[] buffer)
-   {  return update(buffer,0,buffer.length);
-   }
+	/** Transforms an array of bytes into a string of hex values. */
+	public static String asHex(byte[] buf) {
+		String str = new String();
+		for (int i = 0; i < buf.length; i++) {
+			str += Integer.toHexString((buf[i] >>> 4) & 0x0F);
+			str += Integer.toHexString(buf[i] & 0x0F);
+		}
+		return str;
+	}
 
+	/** Transforms an array of bytes into a string of hex values. */
+	public static String asHex(char[] buf, int index) {
+		String str = new String();
+		for (int i = 0; i < index * 2; i++) {
+			str += Integer.toHexString((buf[i] >>> 4) & 0x0F);
+			str += Integer.toHexString(buf[i] & 0x0F);
+		}
+		return str;
+	}
+	
+	/** Support_IMS SIM 
+	 * @param hex
+	 * @param size
+	 * @return
+	 */
+	public String asHexToStr(int[] hex, int size) {
+		int tmp, i;
+		char chr;
+		String str = new String();
 
-   /** MessageDigest finalization. Ends a message-digest operation, writing the
-     * the message digest and zeroizing the context. */
-   abstract public byte[] doFinal();
+		for (i = 0; i < size * 2; i++) {
+			if ((i % 2) > 0)
+				tmp = hex[i / 2] & 0x0f;
+			else
+				// i % 2 == 0
+				tmp = (hex[i / 2] & 0xf0) >> 4;
 
+			if ((tmp >= 0) && (tmp <= 9))
+				chr = (char) (tmp + 48); // ASICC value change
+			else
+				chr = (char) (tmp + 87); // ASICC value change
 
-   /** Gets the MessageDigest. The same as doFinal(). */
-   public byte[] getDigest()
-   {  return doFinal();
-   }
+			str += chr;
+		}
+		return str;
+	}
 
+	/** Support_IMS SIM 
+	 * @param strbuf
+	 * @return
+	 */
+	public int[] asStrToHex(String strbuf) {
+		int i, tmp;
+		char[] cbuf = strbuf.toCharArray();
+		int[] ibuf = new int[cbuf.length];
+		int[] iHex = new int[cbuf.length];
+		for (i = 0; i < cbuf.length; i++) {
+			ibuf[i] = (int) cbuf[i];
+		}
 
-   /** Gets the Message Digest as string of hex values. */
-   public String asHex()
-   {   return asHex(doFinal());
-   }
-
-
-   /** Transforms an array of bytes into a string of hex values. */
-   public static String asHex(byte[] buf)
-   {  String str=new String();
-      for (int i=0; i<buf.length; i++)
-      {  str+=Integer.toHexString((buf[i]>>>4)&0x0F);
-         str+=Integer.toHexString(buf[i]&0x0F);
-      }
-      return str;
-   }
+		for (i = 0; i < ibuf.length; i++) {
+			if ((ibuf[i] - 48) >= 0 && (ibuf[i] - 48) <= 9)
+				tmp = (ibuf[i] - 48);
+			else
+				tmp = (cbuf[i] - 87);
+			if ((i % 2) > 0)
+				iHex[i / 2] = iHex[i / 2] | tmp;
+			else
+				iHex[i / 2] = tmp << 4;
+		}
+		return iHex;
+	}
 
 }

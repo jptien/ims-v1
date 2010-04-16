@@ -24,6 +24,13 @@
 package org.zoolu.tools;
 
 
+//PersonalJava
+//import java.util.HashSet;
+//import java.util.Iterator;
+import org.zoolu.tools.HashSet;
+import org.zoolu.tools.Iterator;
+
+
 
 /** A Timer is a simple object that fires an onTimeout() method to its TimerListener when the time expires.
   * A Timer have to be started and can be halted before expired.
